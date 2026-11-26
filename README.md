@@ -109,3 +109,20 @@ Beyond multi-tool installation, `riir-skills` provides deterministic verificatio
 ├── src/
 └── tests/
 ```
+
+## Contributing
+
+Contributions are warmly welcomed! Whether you have field-tested lessons from rewriting production codebases into Rust or improvements to the verification CLI, please open an issue or pull request:
+
+- **New Skills & Playbooks**: Source-language migration guides, real-world FFI/ABI checklists, parity testing recipes, or performance tuning patterns under `skills/`.
+- **CLI & Tool Targets**: Additional AI tool install targets, audit rules, or differential runner enhancements under `src/`.
+- **Issues & Discussions**: Share rewrite failure modes, edge cases, or feature requests at [github.com/riirdev/skills/issues](https://github.com/riirdev/skills/issues).
+- **Pull Requests**: Submit improvements at [github.com/riirdev/skills/pulls](https://github.com/riirdev/skills/pulls) after running:
+
+```sh
+cargo fmt --check
+cargo clippy --all-targets -- -D warnings
+cargo test
+cargo run -- validate
+```
+

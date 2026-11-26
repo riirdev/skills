@@ -1,19 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="fbg" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#161D2B"/>
-      <stop offset="100%" stop-color="#090C12"/>
+    <linearGradient id="fbg" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#171E2E"/>
+      <stop offset="100%" stop-color="#090D16"/>
     </linearGradient>
-    <linearGradient id="fcopper" x1="20" y1="14" x2="54" y2="50" gradientUnits="userSpaceOnUse">
+    <linearGradient id="fcopper" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FDBA74"/>
       <stop offset="50%" stop-color="#F97316"/>
       <stop offset="100%" stop-color="#C2410C"/>
     </linearGradient>
   </defs>
-  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#fbg)" stroke="#334155" stroke-width="2"/>
-  <rect x="12" y="21" width="7" height="7" rx="1.5" stroke="#94A3B8" stroke-width="2"/>
-  <rect x="12" y="36" width="7" height="7" rx="1.5" stroke="#94A3B8" stroke-width="2"/>
-  <path d="M23 20L32 32L23 44" stroke="#FB923C" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M31 20L40 32L31 44" stroke="url(#fcopper)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M43 16L49 19L53 27L51 32L53 37L49 45L43 48L41 42C45 36 45 28 41 22L43 16Z" fill="url(#fcopper)"/>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#fbg)" stroke="#334155" stroke-width="1.8"/>
+  <path fill-rule="evenodd" fill="url(#fcopper)" d="M 22.47,16.73 L 27.94,14.46 L 28.65,9.75 L 35.35,9.75 L 36.06,14.46 L 36.06,14.46 L 41.53,16.73 L 45.37,13.90 L 50.10,18.63 L 47.27,22.47 L 47.27,22.47 L 49.54,27.94 L 54.25,28.65 L 54.25,35.35 L 49.54,36.06 L 49.54,36.06 L 47.27,41.53 L 50.10,45.37 L 45.37,50.10 L 41.53,47.27 L 41.53,47.27 L 36.06,49.54 L 35.35,54.25 L 28.65,54.25 L 27.94,49.54 L 27.94,49.54 L 22.47,47.27 L 18.63,50.10 L 13.90,45.37 L 16.73,41.53 L 16.73,41.53 L 14.46,36.06 L 9.75,35.35 L 9.75,28.65 L 14.46,27.94 L 14.46,27.94 L 16.73,22.47 L 13.90,18.63 L 18.63,13.90 L 22.47,16.73 Z M 44.50,32.00 A 12.50,12.50 0 1,0 19.50,32.00 A 12.50,12.50 0 1,0 44.50,32.00 Z"/>
+  <path d="M26 26.5L31.5 32L26 37.5" stroke="#FFF7ED" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M32.5 26.5L38 32L32.5 37.5" stroke="#FDBA74" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
