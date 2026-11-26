@@ -1,0 +1,9 @@
+[package]
+name = "riir-skills"
+version = "0.1.0"
+edition = "2024"
+description = "Cross-agent skill suite and engineering verification CLI for Rust development and Rust rewrites"
+repository = "https://github.com/riirdev/skills"
+
+[lints.rust]
+unsafe_code = "forbid"

@@ -1,0 +1,7 @@
+{
+  "name": "riir-skills",
+  "version": "0.1.0",
+  "description": "Seven-skill suite and zero-dependency Rust CLI for planning, executing, parity-testing, FFI-bridging, and hardening Rust rewrites and Rust systems.",
+  "repository": "https://github.com/riirdev/skills",
+  "skills": "./skills"
+}

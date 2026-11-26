@@ -1,0 +1,12 @@
+{
+  "name": "riir-skills",
+  "displayName": "RIIR & Rust Engineering Skills",
+  "version": "0.1.0",
+  "description": "Seven-skill suite and zero-dependency Rust CLI for planning, executing, parity-testing, FFI-bridging, and hardening Rust rewrites and Rust systems.",
+  "repository": "https://github.com/riirdev/skills",
+  "suggestedPrompts": [
+    "Plan a phased Rewrite It In Rust migration using the riir skill",
+    "Build a differential parity harness with rust-parity-testing",
+    "Audit and reduce unsafe blocks with rust-unsafe-hardening"
+  ]
+}
