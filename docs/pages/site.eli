@@ -1,0 +1,323 @@
+;; Live browser interaction runtime for riir.dev (compiled in-browser from Eliscript).
+;; Keeps zero handwritten JavaScript business logic in the repository.
+
+(module riir.site
+  (import "eliscript/platform/browser.mjs"
+          browserCapabilities browserDocument)
+
+  (defconst capabilities
+    (browserCapabilities globalThis.globalThis (js-array "document")))
+  (defconst page (browserDocument capabilities))
+
+  ;; -------------------------------------------------------------- DOM helpers
+
+  (defun field (obj name) (get obj name))
+
+  (defun set-field (obj name value)
+    (Reflect/set obj name value))
+
+  (defun set-text (el value)
+    (set-field el "textContent" (str value)))
+
+  (defun nodes (selector)
+    (Array/from (js-call page :querySelectorAll selector)))
+
+  (defun node (selector)
+    (js-call page :querySelector selector))
+
+  (defun present? (val) (not (nil? val)))
+
+  (defun same? (a b) (Object/is a b))
+
+  (defun attr (el name)
+    (js-call el :getAttribute name))
+
+  (defun set-attr (el name value)
+    (js-call el :setAttribute name value))
+
+  (defun set-selected (el active)
+    (set-attr el "aria-selected" (if active "true" "false")))
+
+  (defun set-pressed (el active)
+    (set-attr el "aria-pressed" (if active "true" "false")))
+
+  (defun set-hidden (el hidden)
+    (set-field el "hidden" (if hidden t false)))
+
+  (defun watch (el event handler)
+    (js-call el :addEventListener event handler))
+
+  (defun each (items handler)
+    (let ((i 0)
+          (len (js-length items)))
+      (while (< i len)
+        (funcall handler (js-nth i items))
+        (setq i (1+ i)))))
+
+  ;; ---------------------------------------------------------- copy to clipboard
+
+  (defun copy-string (text)
+    (let ((nav (field globalThis.globalThis "navigator")))
+      (when (present? nav)
+        (let ((clip (field nav "clipboard")))
+          (when (and (present? clip) (present? (field clip "writeText")))
+            (try
+              (let ((pending (js-call clip :writeText text)))
+                (when (and (present? pending) (present? (field pending "catch")))
+                  (js-call pending :catch (lambda (err) nil))))
+              (catch err nil)))))))
+
+  (defun bind-copy-buttons ()
+    (each (nodes "[data-copy-command], [data-copy-target]")
+          (lambda (btn)
+            (watch btn "click"
+                   (lambda (ev)
+                     (let* ((direct (attr btn "data-copy-command"))
+                            (target-sel (attr btn "data-copy-target"))
+                            (target-el (if (present? target-sel) (node target-sel) nil))
+                            (cmd (if (present? direct)
+                                     direct
+                                   (if (present? target-el)
+                                       (field target-el "textContent")
+                                     ""))))
+                       (when (not (= cmd ""))
+                         (copy-string cmd)
+                         (let ((orig (or (attr btn "data-copy-label")
+                                         (field btn "textContent"))))
+                           (set-attr btn "data-copy-label" orig)
+                           (set-text btn "Copied")
+                           (globalThis.setTimeout
+                             (lambda () (set-text btn orig))
+                             1400)))))))))
+
+  ;; ----------------------------------------------------------- RIIR route advisor
+
+  (defun route-table ()
+    (js-object
+      "mechanical"
+      (js-object
+        "title" "Route A: Mechanical 1:1 Port"
+        "when" "No live hybrid releases needed AND an independent test suite / oracle already exists."
+        "ledger" "PORTING.md + LIFETIMES.tsv + 3-File Pilot + 12-Dim Parity"
+        "skills" "riir -> rust-parity-testing -> rust-unsafe-hardening"
+        "gate" "100% inventory parity + L0-L5 green before Phase-2 safe refactoring"
+        "cmd" "cargo run -- init-ledger ./my-port --mode mechanical --apply")
+      "incremental"
+      (js-object
+        "title" "Route B: Incremental Strangler-Fig"
+        "when" "Active production users cannot pause releases; swap subsystems leaf-by-leaf behind FFI."
+        "ledger" "PORTING.md + Bridge Call-Site Burn-Down + cases.jsonl"
+        "skills" "riir -> rust-ffi-bridge -> rust-parity-testing -> rust-unsafe-hardening"
+        "gate" "Shadow diff zero + 100% callers flipped + FFI bridge deleted"
+        "cmd" "cargo run -- init-ledger ./my-port --mode incremental --apply")
+      "clean-room"
+      (js-object
+        "title" "Route C: Clean-Room Specification Rewrite"
+        "when" "Legacy runtime/GC/subprocess overhead is the core bottleneck; freeze external contracts."
+        "ledger" "PARITY.md + cases.jsonl + Benchmark Baselines"
+        "skills" "riir -> rust-architecture -> rust-parity-testing -> rust-performance"
+        "gate" "Black-box differential parity + latency/RSS/throughput gates green"
+        "cmd" "cargo run -- init-ledger ./my-rewrite --mode clean-room --apply")
+      "dual-lang"
+      (js-object
+        "title" "Route D: Dual-Language Paired Evolution"
+        "when" "Rust must evolve alongside a companion language long-term with 1-for-1 fidelity."
+        "ledger" "PARITY.md + Shared JSONL Corpora + Decoupled Coverage Snapshots"
+        "skills" "rust-dual-lang -> rust-parity-testing -> rust-architecture"
+        "gate" "Paired file/method order + test count & coverage parity on both repos"
+        "cmd" "cargo run -- init-ledger ./my-dual --mode dual-lang --apply")))
+
+  (defun bind-route-advisor ()
+    (let ((tabs (nodes "[data-route-tab]"))
+          (title-el (node "[data-route-title]"))
+          (when-el (node "[data-route-when]"))
+          (ledger-el (node "[data-route-ledger]"))
+          (skills-el (node "[data-route-skills]"))
+          (gate-el (node "[data-route-gate]"))
+          (cmd-el (node "[data-route-cmd]"))
+          (routes (route-table)))
+      (when (and (present? title-el) (> (js-length tabs) 0))
+        (each tabs
+              (lambda (tab)
+                (watch tab "click"
+                       (lambda (ev)
+                         (let* ((key (attr tab "data-route-tab"))
+                                (entry (field routes key)))
+                           (when (present? entry)
+                             (each tabs (lambda (t0) (set-selected t0 (same? t0 tab))))
+                             (set-text title-el (field entry "title"))
+                             (when (present? when-el) (set-text when-el (field entry "when")))
+                             (when (present? ledger-el) (set-text ledger-el (field entry "ledger")))
+                             (when (present? skills-el) (set-text skills-el (field entry "skills")))
+                             (when (present? gate-el) (set-text gate-el (field entry "gate")))
+                             (when (present? cmd-el) (set-text cmd-el (field entry "cmd"))))))))))))
+
+  ;; ---------------------------------------------------------- 7-skill phase filter
+
+  (defun has-token? (haystack needle)
+    (if (= needle "all")
+        t
+      (let ((parts (js-call (str " " (or haystack "") " ") :includes (str " " needle " "))))
+        parts)))
+
+  (defun bind-skill-filter ()
+    (let ((buttons (nodes "[data-skill-filter]"))
+          (cards (nodes "[data-skill-card]"))
+          (count-el (node "[data-skill-count]")))
+      (when (> (js-length buttons) 0)
+        (each buttons
+              (lambda (btn)
+                (watch btn "click"
+                       (lambda (ev)
+                         (let ((cat (attr btn "data-skill-filter"))
+                               (visible 0))
+                           (each buttons (lambda (b0) (set-selected b0 (same? b0 btn))))
+                           (each cards
+                                 (lambda (card)
+                                   (let ((match (has-token? (attr card "data-skill-cats") cat)))
+                                     (set-hidden card (not match))
+                                     (when match (setq visible (1+ visible))))))
+                           (when (present? count-el)
+                             (set-text count-el (str visible " / " (js-length cards) " skills")))))))))))
+
+  ;; ----------------------------------------------------- install command builder
+
+  (defun bind-install-builder ()
+    (let ((tool-btns (nodes "[data-tool-toggle]"))
+          (scope-btns (nodes "[data-scope-toggle]"))
+          (mode-btns (nodes "[data-mode-toggle]"))
+          (apply-btn (node "[data-apply-toggle]"))
+          (preset-btns (nodes "[data-tool-preset]"))
+          (out-el (node "[data-built-command]"))
+          (scope-val "global")
+          (mode-val "symlink")
+          (apply-val t))
+      (when (present? out-el)
+        (let ((refresh
+                (lambda ()
+                  (let ((selected (js-array)))
+                    (each tool-btns
+                          (lambda (btn)
+                            (when (= (attr btn "aria-pressed") "true")
+                              (js-call selected :push (attr btn "data-tool-toggle")))))
+                    (let* ((tools-arg (if (= (js-length selected) 0)
+                                          "detected"
+                                        (if (= (js-length selected) (js-length tool-btns))
+                                            "all"
+                                          (js-call selected :join ","))))
+                           (scope-part (if (= scope-val "project") " --scope project" ""))
+                           (mode-part (if (or (and (= scope-val "global") (= mode-val "copy"))
+                                              (and (= scope-val "project") (= mode-val "symlink")))
+                                          (str " --mode " mode-val)
+                                        ""))
+                           (apply-part (if apply-val " --apply" "")))
+                      (set-text out-el
+                                (str "cargo run -- install --tools " tools-arg scope-part mode-part apply-part)))))))
+          (each tool-btns
+                (lambda (btn)
+                  (watch btn "click"
+                         (lambda (ev)
+                           (let ((cur (= (attr btn "aria-pressed") "true")))
+                             (set-pressed btn (not cur))
+                             (funcall refresh))))))
+          (each scope-btns
+                (lambda (btn)
+                  (watch btn "click"
+                         (lambda (ev)
+                           (setq scope-val (attr btn "data-scope-toggle"))
+                           (each scope-btns (lambda (b0) (set-selected b0 (same? b0 btn))))
+                           (funcall refresh)))))
+          (each mode-btns
+                (lambda (btn)
+                  (watch btn "click"
+                         (lambda (ev)
+                           (setq mode-val (attr btn "data-mode-toggle"))
+                           (each mode-btns (lambda (b0) (set-selected b0 (same? b0 btn))))
+                           (funcall refresh)))))
+          (when (present? apply-btn)
+            (watch apply-btn "click"
+                   (lambda (ev)
+                     (setq apply-val (not apply-val))
+                     (set-pressed apply-btn apply-val)
+                     (set-text apply-btn (if apply-val "--apply: on" "--apply: dry-run"))
+                     (funcall refresh))))
+          (each preset-btns
+                (lambda (btn)
+                  (watch btn "click"
+                         (lambda (ev)
+                           (let ((preset (attr btn "data-tool-preset")))
+                             (each tool-btns
+                                   (lambda (tb)
+                                     (let ((tid (attr tb "data-tool-toggle")))
+                                       (if (= preset "all")
+                                           (set-pressed tb t)
+                                         (if (= preset "clear")
+                                             (set-pressed tb false)
+                                           (set-pressed tb
+                                                        (js-call (str ",antigravity,agy,codex,claude,cursor,opencode,pi,deepseek-harness,")
+                                                                 :includes (str "," tid ","))))))))
+                             (funcall refresh))))))
+          (funcall refresh)))))
+
+  ;; -------------------------------------------------------------- CLI showcase
+
+  (defun bind-cli-tabs ()
+    (let ((tabs (nodes "[data-cli-tab]"))
+          (panels (nodes "[data-cli-panel]")))
+      (when (> (js-length tabs) 0)
+        (each tabs
+              (lambda (tab)
+                (watch tab "click"
+                       (lambda (ev)
+                         (let ((target (attr tab "data-cli-tab")))
+                           (each tabs (lambda (t0) (set-selected t0 (same? t0 tab))))
+                           (each panels
+                                 (lambda (panel)
+                                   (set-hidden panel
+                                               (not (= (attr panel "data-cli-panel") target)))))))))))))
+
+  ;; ---------------------------------------------------- mobile nav, scroll, year
+
+  (defun bind-nav-drawer ()
+    (let ((toggle (node "[data-nav-toggle]"))
+          (menu (node "[data-nav-menu]")))
+      (when (and (present? toggle) (present? menu))
+        (watch toggle "click"
+               (lambda (ev)
+                 (let ((open (= (attr menu "data-open") "true")))
+                   (set-attr menu "data-open" (if open "false" "true"))
+                   (set-attr toggle "aria-expanded" (if open "false" "true"))))))))
+
+  (defun bind-header-scroll ()
+    (let ((header (node ".site-header"))
+          (win globalThis.globalThis))
+      (when (present? header)
+        (let ((sync (lambda ()
+                      (let ((y (field win "scrollY")))
+                        (set-attr header "data-scrolled"
+                                  (if (and (= (value-type y) "number") (> y 16))
+                                      "true"
+                                    "false"))))))
+          (funcall sync)
+          (watch win "scroll" (lambda (ev) (funcall sync)))))))
+
+  (defun bind-year ()
+    (let ((yr (js-call (new globalThis.Date) :getFullYear)))
+      (each (nodes "[data-year]")
+            (lambda (el) (set-text el yr)))))
+
+  ;; ------------------------------------------------------------------ startup
+
+  (defun start ()
+    (bind-copy-buttons)
+    (bind-route-advisor)
+    (bind-skill-filter)
+    (bind-install-builder)
+    (bind-cli-tabs)
+    (bind-nav-drawer)
+    (bind-header-scroll)
+    (bind-year))
+
+  (if (= (field page "readyState") "loading")
+      (watch page "DOMContentLoaded" (lambda (ev) (start)))
+    (start)))

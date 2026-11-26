@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>riir.dev — Rewrite It In Rust Skills &amp; Verification CLI</title>
+  <meta name="description" content="Seven specialized Agent Skills and a zero-dependency pure-Rust CLI for planning, executing, parity-testing, FFI-bridging, and hardening Rust rewrites.">
+  <meta name="theme-color" content="#090c12">
+  <link rel="canonical" href="https://riir.dev/">
+  <link rel="icon" type="image/svg+xml" href="./pages/assets/favicon.svg">
+  <link rel="stylesheet" href="./pages/styles.css">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="riir.dev — Rewrite It In Rust Skills">
+  <meta property="og:description" content="Seven Agent Skills and a zero-dependency pure-Rust CLI for Rust engineering and RIIR migrations.">
+  <meta property="og:url" content="https://riir.dev/">
+  <meta property="og:image" content="https://riir.dev/pages/assets/og-card.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="importmap">
+  {
+    "imports": {
+      "eliscript/": "https://cdn.jsdelivr.net/npm/eliscript@0.1.3/"
+    }
+  }
+  </script>
+  <script type="module">
+    import { mountEliscriptScripts } from "eliscript/dist/browser/host.mjs";
+    const mount = () =>
+      mountEliscriptScripts(document, {
+        runtimeBase: "https://cdn.jsdelivr.net/npm/eliscript@0.1.3/"
+      }).catch((err) => console.error("Eliscript mount failed:", err));
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", mount, { once: true });
+    } else {
+      mount();
+    }
+  </script>
+  <script type="text/eliscript" src="./pages/site.eli"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-scrolled="false">
+    <div class="shell nav-wrap">
+      <a class="brand" href="./index.html" aria-current="page">
+        <img src="./pages/assets/logo.svg" alt="riir.dev emblem" width="36" height="36">
+        <span class="brand-name">riir.dev</span>
+        <span class="brand-tag">7 skills · pure std rust</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-nav-toggle>☰</button>
+      <nav class="site-nav" aria-label="Primary navigation" data-nav-menu data-open="false">
+        <a href="#routes">Routes</a>
+        <a href="./pages/skills.html">Skills</a>
+        <a href="./pages/cli.html">CLI &amp; Targets</a>
+        <a class="nav-cta" href="https://github.com/riirdev/skills" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Agent Skills + Zero-Dependency Rust CLI</span>
+          <h1>Rewrite systems into <span class="accent">safe, verified Rust</span> without guesswork.</h1>
+          <p class="hero-copy">
+            <strong>riirdev/skills</strong> pairs seven focused Agent Skills with a pure standard-library Rust CLI.
+            Choose the right migration route, lock behavioral parity with differential harnesses, isolate FFI boundaries,
+            and systematically harden <code>unsafe</code> blocks across 14 AI coding tools.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#installer">Configure Tool Install</a>
+            <a class="btn" href="./pages/skills.html">Explore All 7 Skills</a>
+          </div>
+          <div class="install-bar">
+            <div class="install-cmd"><span class="install-prompt">$</span>npx skills add riirdev/skills</div>
+            <button class="copy-btn" type="button" data-copy-command="npx skills add riirdev/skills">Copy</button>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Suite metrics">
+          <img class="hero-emblem" src="./pages/assets/logo.svg" alt="riir.dev forged gear chevron logo" width="116" height="116">
+          <div class="stat-grid">
+            <div class="stat-box"><strong>7 Skills</strong><span>Orchestration to hardening</span></div>
+            <div class="stat-box"><strong>14 Targets</strong><span>Cross-agent CLI &amp; manifests</span></div>
+            <div class="stat-box"><strong>0 Crates</strong><span>Pure std Rust compilation</span></div>
+            <div class="stat-box"><strong>0 Unsafe</strong><span>#![forbid(unsafe_code)] CLI</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="pipeline-heading">
+      <div class="shell">
+        <div class="section-head">
+          <h2 id="pipeline-heading">Four-Stage RIIR Engineering Pipeline</h2>
+          <p>Compiles-cleanly proves types, not semantics. Each phase enforces explicit ledgers and machine-checked gates before advancing.</p>
+        </div>
+        <div class="diagram-frame">
+          <img src="./pages/assets/pipeline-diagram.svg" alt="Four-stage RIIR pipeline: Stage 0 Blueprint, Stage 1 Port and Bridge, Stage 2 Parity Gates, Stage 3 Harden and Lift" width="920" height="300">
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="routes" aria-labelledby="routes-heading">
+      <div class="shell">
+        <div class="section-head">
+          <h2 id="routes-heading">Interactive Route Advisor</h2>
+          <p>Select your project constraints to inspect the recommended RIIR route, ledgers, skill sequence, and exit gate.</p>
+        </div>
+
+        <div class="pill-row" role="tablist" aria-label="Migration routes">
+          <button class="pill-btn" type="button" role="tab" aria-selected="true" data-route-tab="mechanical">Route A · Mechanical 1:1</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-route-tab="incremental">Route B · Incremental Bridge</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-route-tab="clean-room">Route C · Clean-Room Spec</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-route-tab="dual-lang">Route D · Dual-Language</button>
+        </div>
+
+        <div class="panel-card">
+          <h3 style="margin:0 0 0.35rem;" data-route-title>Route A: Mechanical 1:1 Port</h3>
+          <p style="margin:0;color:var(--text-soft);" data-route-when>No live hybrid releases needed AND an independent test suite / oracle already exists.</p>
+          <div class="route-meta">
+            <div class="meta-item">
+              <span class="meta-label">Required Ledgers</span>
+              <span data-route-ledger>PORTING.md + LIFETIMES.tsv + 3-File Pilot + 12-Dim Parity</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Skill Sequence</span>
+              <span data-route-skills>riir -&gt; rust-parity-testing -&gt; rust-unsafe-hardening</span>
+            </div>
+            <div class="meta-item" style="grid-column:1 / -1;">
+              <span class="meta-label">Exit Gate</span>
+              <span data-route-gate>100% inventory parity + L0-L5 green before Phase-2 safe refactoring</span>
+            </div>
+          </div>
+          <div class="install-bar" style="max-width:none;">
+            <div class="install-cmd"><span class="install-prompt">$</span><span data-route-cmd>cargo run -- init-ledger ./my-port --mode mechanical --apply</span></div>
+            <button class="copy-btn" type="button" data-copy-target="[data-route-cmd]">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills" aria-labelledby="skills-heading">
+      <div class="shell">
+        <div class="skills-header-bar">
+          <div class="section-head" style="margin-bottom:0;">
+            <h2 id="skills-heading">The Seven-Skill Suite</h2>
+            <p>Install the whole suite or filter by engineering phase.</p>
+          </div>
+          <span class="count-badge" data-skill-count>7 / 7 skills</span>
+        </div>
+
+        <div class="pill-row" role="tablist" aria-label="Skill phase filters">
+          <button class="pill-btn" type="button" role="tab" aria-selected="true" data-skill-filter="all">All Phases</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="orchestrate">Orchestration</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="verify">Parity &amp; Perf</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="safety">FFI &amp; Unsafe</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="architecture">Architecture &amp; Dual-Lang</button>
+        </div>
+
+        <div class="cards-grid">
+          <article class="skill-card" data-skill-card data-skill-cats="orchestrate">
+            <div>
+              <div class="skill-name">riir</div>
+              <p class="skill-desc">Flagship RIIR orchestrator: route matrix, PORTING.md, LIFETIMES.tsv, risk spikes, 3-file pilot, worktree discipline, and Phase-2 hardening.</p>
+            </div>
+            <div class="skill-foot"><span>Orchestrator</span><a href="./pages/skills.html#riir">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="verify">
+            <div>
+              <div class="skill-name">rust-parity-testing</div>
+              <p class="skill-desc">Record/replay/diff truth sets, 12-dimension structural parity, L0-L5 acceptance ladder, fault injection, and anti-fake-pass controls.</p>
+            </div>
+            <div class="skill-foot"><span>Verification</span><a href="./pages/skills.html#rust-parity-testing">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="safety">
+            <div>
+              <div class="skill-name">rust-ffi-bridge</div>
+              <p class="skill-desc">Narrow FFI seams (C ABI, N-API, PyO3, WASM, mobile), compile-time layout assertions, panic sealing, and bridge-lift burn-down.</p>
+            </div>
+            <div class="skill-foot"><span>Interop &amp; ABI</span><a href="./pages/skills.html#rust-ffi-bridge">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="safety">
+            <div>
+              <div class="skill-name">rust-unsafe-hardening</div>
+              <p class="skill-desc">Staged U1-U8 roadmap: pure-logic crates, killing static mut, generational handles, 100% // SAFETY: docs, and CI ratchets.</p>
+            </div>
+            <div class="skill-foot"><span>Soundness</span><a href="./pages/skills.html#rust-unsafe-hardening">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="architecture">
+            <div>
+              <div class="skill-name">rust-architecture</div>
+              <p class="skill-desc">Acyclic crate layering, CLI-as-kernel / thin-shell design, domain errors, bounded shutdown, and clean-slate contracts.</p>
+            </div>
+            <div class="skill-foot"><span>Design</span><a href="./pages/skills.html#rust-architecture">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="verify">
+            <div>
+              <div class="skill-name">rust-performance</div>
+              <p class="skill-desc">Separate latency, throughput, and memory axes; fair cold/warm gates; profiling and fixing top-10 Rust port bottlenecks.</p>
+            </div>
+            <div class="skill-foot"><span>Performance</span><a href="./pages/skills.html#rust-performance">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="architecture">
+            <div>
+              <div class="skill-name">rust-dual-lang</div>
+              <p class="skill-desc">1-for-1 paired file/method construction, language-neutral JSONL contracts, and decoupled test/coverage parity gates.</p>
+            </div>
+            <div class="skill-foot"><span>Dual-Language</span><a href="./pages/skills.html#rust-dual-lang">Inspect →</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="installer" aria-labelledby="installer-heading">
+      <div class="shell">
+        <div class="section-head">
+          <h2 id="installer-heading">Multi-Tool Install Command Builder</h2>
+          <p>Toggle target AI coding tools, scope, and install mode. Dry-run by default until <code>--apply</code> is included.</p>
+        </div>
+
+        <div class="panel-card">
+          <div class="builder-grid">
+            <div>
+              <span class="meta-label">Select AI Tools</span>
+              <div class="tool-chips" style="margin-bottom:0.85rem;">
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="antigravity">antigravity</button>
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="agy">agy</button>
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="codex">codex / ChatGPT</button>
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="claude">claude</button>
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="cursor">cursor</button>
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="opencode">opencode</button>
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="pi">pi</button>
+                <button class="chip-btn" type="button" aria-pressed="true" data-tool-toggle="deepseek-harness">deepseek-harness</button>
+                <button class="chip-btn" type="button" aria-pressed="false" data-tool-toggle="agents">agents</button>
+                <button class="chip-btn" type="button" aria-pressed="false" data-tool-toggle="kimi">kimi</button>
+                <button class="chip-btn" type="button" aria-pressed="false" data-tool-toggle="kimi-code">kimi-code</button>
+                <button class="chip-btn" type="button" aria-pressed="false" data-tool-toggle="copilot">copilot</button>
+                <button class="chip-btn" type="button" aria-pressed="false" data-tool-toggle="gemini">gemini</button>
+                <button class="chip-btn" type="button" aria-pressed="false" data-tool-toggle="commandcode">commandcode</button>
+              </div>
+              <div class="pill-row" style="margin-bottom:0;">
+                <button class="pill-btn" type="button" data-tool-preset="top8">Preset: Primary 8</button>
+                <button class="pill-btn" type="button" data-tool-preset="all">Preset: All 14</button>
+                <button class="pill-btn" type="button" data-tool-preset="clear">Auto-Detect</button>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:0.9rem;">
+              <div>
+                <span class="meta-label">Scope</span>
+                <div class="pill-row" style="margin-bottom:0;">
+                  <button class="pill-btn" type="button" aria-selected="true" data-scope-toggle="global">Global</button>
+                  <button class="pill-btn" type="button" aria-selected="false" data-scope-toggle="project">Project</button>
+                </div>
+              </div>
+              <div>
+                <span class="meta-label">Install Mode</span>
+                <div class="pill-row" style="margin-bottom:0;">
+                  <button class="pill-btn" type="button" aria-selected="true" data-mode-toggle="symlink">Symlink</button>
+                  <button class="pill-btn" type="button" aria-selected="false" data-mode-toggle="copy">Copy (SHA-256)</button>
+                </div>
+              </div>
+              <div>
+                <span class="meta-label">Execution</span>
+                <button class="pill-btn" type="button" aria-pressed="true" data-apply-toggle>--apply: on</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="install-bar" style="max-width:none;">
+            <div class="install-cmd"><span class="install-prompt">$</span><span data-built-command>cargo run -- install --tools antigravity,agy,codex,claude,cursor,opencode,pi,deepseek-harness --apply</span></div>
+            <button class="copy-btn" type="button" data-copy-target="[data-built-command]">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="cli-heading">
+      <div class="shell">
+        <div class="section-head">
+          <h2 id="cli-heading">Engineering Verification CLI</h2>
+          <p>Zero-dependency pure-Rust utilities shipped alongside the skills for validation, unsafe auditing, and differential parity testing.</p>
+        </div>
+
+        <div class="pill-row" role="tablist" aria-label="CLI subcommands">
+          <button class="pill-btn" type="button" role="tab" aria-selected="true" data-cli-tab="validate">validate</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-cli-tab="unsafe-audit">unsafe-audit</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-cli-tab="diff-run">diff-run</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-cli-tab="init-ledger">init-ledger</button>
+        </div>
+
+        <div class="cli-panel" data-cli-panel="validate">
+          <pre class="code-block"><code>$ cargo run -- validate
+Validated 7 skills and 3 plugin manifests: 0 error(s)</code></pre>
+        </div>
+        <div class="cli-panel" data-cli-panel="unsafe-audit" hidden>
+          <pre class="code-block"><code>$ cargo run -- unsafe-audit src tests --forbid-static-mut --require-safety-docs --forbid-file-allows --max-unsafe-blocks 0
+Unsafe Audit: 11 file(s) scanned | forbid(unsafe_code)=0 | file_allows=0 | unsafe_blocks=0 (documented=0) | unsafe_fn=0 | static_mut=0</code></pre>
+        </div>
+        <div class="cli-panel" data-cli-panel="diff-run" hidden>
+          <pre class="code-block"><code>$ riir-skills diff-run --legacy "./ref-bin" --rust "./target/release/app" --cases parity.jsonl --timeout-ms 5000
+Differential Parity: 128/128 passed (0 failed)</code></pre>
+        </div>
+        <div class="cli-panel" data-cli-panel="init-ledger" hidden>
+          <pre class="code-block"><code>$ riir-skills init-ledger ./my-rewrite --mode incremental --apply
+[create] ./my-rewrite/PORTING.md
+[create] ./my-rewrite/LIFETIMES.tsv
+[create] ./my-rewrite/PARITY.md
+[create] ./my-rewrite/UNSAFE-MANIFEST.json</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-row">
+      <div><strong>riir.dev</strong> · Built with live in-browser Eliscript · <span data-year>2026</span></div>
+      <div class="footer-links">
+        <a href="./pages/skills.html">Skills Reference</a>
+        <a href="./pages/cli.html">CLI &amp; 14 Targets</a>
+        <a href="https://github.com/riirdev/skills" target="_blank" rel="noopener noreferrer">github.com/riirdev/skills</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

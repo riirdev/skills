@@ -1,6 +1,14 @@
+<p align="center">
+  <a href="https://riir.dev">
+    <img src="docs/pages/assets/logo.svg" alt="riir.dev logo" width="96" height="96">
+  </a>
+</p>
+
 # riirdev/skills
 
 A specialized suite of **7 Agent Skills** and a **zero-dependency pure-Rust CLI (`riir-skills`)** for planning, executing, verifying, and hardening Rust systems and Rewrite It In Rust (RIIR) migrations.
+
+Website & live documentation: **[https://riir.dev](https://riir.dev)** · Source: **[github.com/riirdev/skills](https://github.com/riirdev/skills)**
 
 ## Included Skills
 

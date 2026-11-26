@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="fbg" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#161D2B"/>
+      <stop offset="100%" stop-color="#090C12"/>
+    </linearGradient>
+    <linearGradient id="fcopper" x1="20" y1="14" x2="54" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FDBA74"/>
+      <stop offset="50%" stop-color="#F97316"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#fbg)" stroke="#334155" stroke-width="2"/>
+  <rect x="12" y="21" width="7" height="7" rx="1.5" stroke="#94A3B8" stroke-width="2"/>
+  <rect x="12" y="36" width="7" height="7" rx="1.5" stroke="#94A3B8" stroke-width="2"/>
+  <path d="M23 20L32 32L23 44" stroke="#FB923C" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M31 20L40 32L31 44" stroke="url(#fcopper)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M43 16L49 19L53 27L51 32L53 37L49 45L43 48L41 42C45 36 45 28 41 22L43 16Z" fill="url(#fcopper)"/>
+</svg>

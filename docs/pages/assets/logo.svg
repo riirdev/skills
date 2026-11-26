@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="12" y1="8" x2="116" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#161D2B"/>
+      <stop offset="100%" stop-color="#090C12"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="14" y1="14" x2="114" y2="114" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#475569" stop-opacity="0.65"/>
+      <stop offset="50%" stop-color="#1E293B" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#F97316" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="copper" x1="48" y1="24" x2="108" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FDBA74"/>
+      <stop offset="42%" stop-color="#F97316"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="20" y1="36" x2="48" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#CBD5E1"/>
+      <stop offset="100%" stop-color="#64748B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Precision badge background (~10% outer margin) -->
+  <rect x="10" y="10" width="108" height="108" rx="24" fill="url(#bg)" stroke="url(#rim)" stroke-width="2.5"/>
+
+  <!-- Subtle forge grid lines -->
+  <path d="M32 22V106M64 22V106M96 22V106" stroke="#1E293B" stroke-width="1" stroke-opacity="0.5"/>
+  <path d="M22 42H106M22 64H106M22 86H106" stroke="#1E293B" stroke-width="1" stroke-opacity="0.5"/>
+
+  <!-- Left: fragmented legacy blocks transitioning rightward -->
+  <g stroke="url(#steel)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="24" y="34" width="14" height="14" rx="3" fill="#1E293B" fill-opacity="0.6"/>
+    <rect x="24" y="57" width="14" height="14" rx="3" stroke-dasharray="3 3"/>
+    <rect x="24" y="80" width="14" height="14" rx="3" fill="#1E293B" fill-opacity="0.6"/>
+  </g>
+
+  <!-- Core transformation double-chevron (>>) -->
+  <path d="M44 43L59 64L44 85" stroke="#FB923C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M56 43L71 64L56 85" stroke="url(#copper)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Right: forged precision gear-shield arc in molten Rust -->
+  <path d="M77 32L83 27L90 31L97 29L100 36L106 40L103 47L107 54L102 60L104 68L98 73L99 81L92 84L90 92L83 92L77 98L74 91L81 82C89 72 89 56 81 46L74 37L77 32Z" fill="url(#copper)"/>
+  <path d="M78 44C84 54 84 74 78 84" stroke="#FFF7ED" stroke-opacity="0.45" stroke-width="2.2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills Reference — riir.dev</title>
+  <meta name="description" content="Detailed reference for all seven RIIR and Rust engineering skills in riirdev/skills.">
+  <meta name="theme-color" content="#090c12">
+  <link rel="canonical" href="https://riir.dev/pages/skills.html">
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "eliscript/": "https://cdn.jsdelivr.net/npm/eliscript@0.1.3/"
+    }
+  }
+  </script>
+  <script type="module">
+    import { mountEliscriptScripts } from "eliscript/dist/browser/host.mjs";
+    const mount = () =>
+      mountEliscriptScripts(document, {
+        runtimeBase: "https://cdn.jsdelivr.net/npm/eliscript@0.1.3/"
+      }).catch((err) => console.error("Eliscript mount failed:", err));
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", mount, { once: true });
+    } else {
+      mount();
+    }
+  </script>
+  <script type="text/eliscript" src="./site.eli"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-scrolled="false">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html">
+        <img src="./assets/logo.svg" alt="riir.dev emblem" width="36" height="36">
+        <span class="brand-name">riir.dev</span>
+        <span class="brand-tag">skills reference</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-nav-toggle>☰</button>
+      <nav class="site-nav" aria-label="Primary navigation" data-nav-menu data-open="false">
+        <a href="../index.html">Home</a>
+        <a href="./skills.html" aria-current="page">Skills</a>
+        <a href="./cli.html">CLI &amp; Targets</a>
+        <a class="nav-cta" href="https://github.com/riirdev/skills" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" style="padding-bottom:2rem;">
+      <div class="shell">
+        <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Progressive Disclosure Architecture</span>
+        <h1 style="max-width:20ch;">Seven Skills, Zero Overlap.</h1>
+        <p class="hero-copy">
+          Each skill keeps its entrypoint compact for fast agent discovery and links deep playbooks on demand inside <code>references/</code>.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell" style="display:grid;gap:1.25rem;">
+        <article class="panel-card" id="riir">
+          <div class="skill-name">1. riir</div>
+          <p class="skill-desc">End-to-end orchestrator for Rewrite It In Rust initiatives. Guides route selection (Routes A–D), Phase 0 blueprinting (pinned read-only baseline, <code>PORTING.md</code>, <code>LIFETIMES.tsv</code>, Risk Spikes, 3-File Pilot), dependency-ordered batching, worktree isolation without git collisions, and Phase-2 hardening.</p>
+          <p style="margin:0.75rem 0 0;font-size:0.88rem;color:var(--text-muted);">References: <code>strategy-matrix.md</code> · <code>blueprinting-templates.md</code> · <code>multi-agent-orchestration.md</code></p>
+        </article>
+
+        <article class="panel-card" id="rust-parity-testing">
+          <div class="skill-name">2. rust-parity-testing</div>
+          <p class="skill-desc">Proves behavioral, ABI, error-path, encoding, and binary-artifact equivalence via Record → Replay → Diff → Shadow → Gate, 12-dimension parity checks, the L0–L5 acceptance ladder, negative controls, and fault injection.</p>
+          <p style="margin:0.75rem 0 0;font-size:0.88rem;color:var(--text-muted);">References: <code>twelve-dimensions.md</code> · <code>differential-harness.md</code></p>
+        </article>
+
+        <article class="panel-card" id="rust-ffi-bridge">
+          <div class="skill-name">3. rust-ffi-bridge</div>
+          <p class="skill-desc">Designs narrow C/C++, N-API, PyO3, WASM, and mobile FFI seams; enforces bidirectional compile-time <code>size_of</code>/<code>offset_of!</code> layout gates against linked headers; seals panics across <code>extern "C"</code>; and drives temporary strangler-bridge removal.</p>
+          <p style="margin:0.75rem 0 0;font-size:0.88rem;color:var(--text-muted);">References: <code>abi-and-layout-gates.md</code> · <code>strangler-bridge-lifecycle.md</code></p>
+        </article>
+
+        <article class="panel-card" id="rust-unsafe-hardening">
+          <div class="skill-name">4. rust-unsafe-hardening</div>
+          <p class="skill-desc">Turns mechanical ports into layered safe Rust via stages U1–U8: pure-logic extraction, replacing <code>setjmp/longjmp</code>, generational handles against ABA, zero <code>static mut</code>, 100% <code>// SAFETY:</code> invariants, and CI ratchets.</p>
+          <p style="margin:0.75rem 0 0;font-size:0.88rem;color:var(--text-muted);">References: <code>staged-hardening-playbook.md</code> · <code>safety-comment-standard.md</code></p>
+        </article>
+
+        <article class="panel-card" id="rust-architecture">
+          <div class="skill-name">5. rust-architecture</div>
+          <p class="skill-desc">Establishes acyclic workspace crate DAGs (<code>core</code> → <code>sys</code> → <code>runtime</code> → thin shells), CLI-as-kernel discipline, typed domain errors, bounded shutdown, clean-slate contracts, and Git-only clean-checkout rebuilds.</p>
+          <p style="margin:0.75rem 0 0;font-size:0.88rem;color:var(--text-muted);">References: <code>workspace-blueprints.md</code> · <code>clean-rust-checklist.md</code></p>
+        </article>
+
+        <article class="panel-card" id="rust-performance">
+          <div class="skill-name">6. rust-performance</div>
+          <p class="skill-desc">Separates latency, throughput, and memory axes; enforces fair cold/warm regression baselines; and targets top-10 Rust port pitfalls including clone storms, redundant UTF-8 checks, lock contention, and chatty IPC/FFI boundaries.</p>
+          <p style="margin:0.75rem 0 0;font-size:0.88rem;color:var(--text-muted);">References: <code>benchmarking-protocol.md</code> · <code>hot-path-patterns.md</code></p>
+        </article>
+
+        <article class="panel-card" id="rust-dual-lang">
+          <div class="skill-name">7. rust-dual-lang</div>
+          <p class="skill-desc">Maintains strict 1-for-1 correspondence when Rust evolves long-term alongside a companion language: paired implementation order, shared JSON/JSONL contract tests, decoupled coverage gates, and anti-gaming checks.</p>
+          <p style="margin:0.75rem 0 0;font-size:0.88rem;color:var(--text-muted);">References: <code>paired-parity-workflow.md</code></p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-row">
+      <div><strong>riir.dev</strong> · Built with live in-browser Eliscript · <span data-year>2026</span></div>
+      <div class="footer-links">
+        <a href="../index.html">Home</a>
+        <a href="./cli.html">CLI &amp; 14 Targets</a>
+        <a href="https://github.com/riirdev/skills" target="_blank" rel="noopener noreferrer">github.com/riirdev/skills</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
