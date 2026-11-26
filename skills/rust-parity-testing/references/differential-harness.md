@@ -46,3 +46,10 @@ Verify failure paths explicitly on both implementations:
 - Resource exhaustion (memory limit, file descriptor limit, disk-full write error)
 - Signal delivery (`SIGINT`, `SIGTERM`, `SIGPIPE`) during active processing
 - Resource-bounded execution with explicit timeouts so deadlocks fail fast instead of stalling CI
+
+## 6. Local Persistence & Upgrade Compatibility Fixtures
+
+Verify storage parity explicitly on both fresh installs and legacy-upgrade paths:
+- **Fresh Schema vs. Legacy Upgrade**: Keep fresh DB initialization separate from legacy table/column migrations; test repeated reopen idempotency, null scalar columns, conflict upserts, soft deletes, and transactional rollback.
+- **No Unconditional Concurrent Overwrites**: Add multi-writer/concurrent-sync fixtures proving a rare snapshot/sync path cannot overwrite newer local rows or reset unread counters when run beside live updates.
+- **Non-Diluted Changed-Path Coverage**: Enforce >= 85% line/function coverage on the smallest reportable scope containing changed behavior paths rather than hiding unexecuted branches behind unrelated crate totals.

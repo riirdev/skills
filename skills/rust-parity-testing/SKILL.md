@@ -50,8 +50,10 @@ Advance sequentially; never report an upper rung as passing until lower rungs ar
 ## 4. Anti-Fake-Pass Discipline
 
 Guards against misleading "green" test runs discovered in real rewrites:
-1. **Negative Control Check**: Verify every new probe or parity fixture can actually fail when the implementation is broken (e.g., mutate expected dimension or inject a known error and confirm non-zero exit).
+1. **Negative Control & Guard Mutation Testing**: A check observed only passing has not been proven to work. Deliberately mutate the parser, rule, or artifact to prove the guard actually fails (and verify file restoration afterward). Never substitute source-text `grep` assertions for calling a checker on real/synthetic outputs.
 2. **Clear Caches Between Recovery Tests**: When testing error recovery ("corrupt input followed by valid input"), purge in-memory/on-disk caches first so a stale placeholder isn't mistaken for fresh success.
 3. **Assert Both Output AND Clean Diagnostics**: A call returning a fallback value while logging a loader/decoder error is a failure, not a pass.
-4. **No Subset Inflation**: Never label a 20% representative subset "100% compatible". Report exact totals (`passed / failed / skipped / blocked`) with input SHA-256 and runtime mode.
-5. **Bound Every Execution**: Set explicit per-case and suite timeouts; never let a hung process wait indefinitely.
+4. **No Subset Inflation or Diluted Coverage**: Never label a 20% representative subset "100% compatible", and never let unrelated legacy code dilute changed-path coverage metrics. Report exact totals (`passed / failed / skipped / blocked`) and changed-path coverage.
+5. **Paired Direct-Probe vs. Public-API Attribution**: When testing a client/SDK against a live backend or protocol, run identical scenarios side-by-side — a direct protocol probe bypassing client state and a public SDK API + callback test — so upstream server issues are separated from SDK bugs instead of adding client-side guesswork delays or fallbacks.
+6. **Real Host-App Smoke & Side-Effect-Free Release Rehearsal**: Unit and library integration tests miss R8 stripping, startup/login init races, and downstream package anchoring. Verify inside a real host app/simulator and rehearse the full release pipeline end-to-end with publish/upload/notify gated on one explicit flag.
+7. **Bound Every Execution**: Set explicit per-case and suite timeouts; never let a hung process wait indefinitely.

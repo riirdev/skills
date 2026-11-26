@@ -49,4 +49,10 @@ Organize multi-module projects into a strict acyclic DAG of crates (see [Workspa
 - **Workspace Automation (`xtask`)**: Put code generators, layout probes, packaging, and multi-step CI gates into a pure-Rust `xtask` crate rather than brittle shell scripts.
 - **Deterministic Offline Tests**: Unit and fast integration tests must run offline using mocked IO/HTTP; gate live external integration tests behind explicit opt-in flags or `#[ignore]`.
 
+## 5. Post-Cutover Consolidation & Source-Authority Hygiene
+
+- **Inventory External Contracts Before Deletion**: Before removing a retired legacy implementation tree, inventory all stable external contracts — artifact filenames, Maven/Swift package coordinates, compiled public symbols, and persisted DB filenames — and adapt thin wrappers to the Rust core instead of breaking downstream consumers.
+- **Separate Active Truth From Historical Logs**: Keep active architecture/API docs and agent rules strictly synchronized with the sole remaining core, while preserving immutable historical logs and retrospectives clearly separated from current specifications.
+- **Verify Guardrail Claims Against Code**: Never assert that a test, index, or invariant protects a boundary from memory; inspect the actual code and confirm it is table-driven or tested before relying on it.
+
 See [Clean Rust Checklist](references/clean-rust-checklist.md) for pre-merge checks.

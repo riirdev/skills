@@ -39,3 +39,9 @@ See [Benchmarking Protocol](references/benchmarking-protocol.md).
 10. **Unconfigured Release Profiles**: Benchmark with tuned `[profile.release]` (`lto = "thin"` or `"fat"`, `codegen-units = 1`, `strip = true` where symbols aren't needed) and profile before guessing (`samply`, `perf`, `flamegraph`, `cargo-bloat`).
 
 See [Hot-Path Patterns](references/hot-path-patterns.md).
+
+## 4. Mobile Binary & Archive Bloat Traps
+
+- **Dead LLVM Bitcode Sections in iOS Archives**: Preview and release XCFramework scripts frequently drift; unstripped `__LLVM,__bitcode` sections can inflate iOS static archives by 70–85%+. Strip dead bitcode in **every** archive producer and verify absence on the final archive via `otool`.
+- **Feature & Duplicate-Code Folding**: Audit Cargo feature flags (avoid pulling unnecessary default features into mobile FFI crates) and fold duplicate generated wrappers before accepting multi-megabyte binary growth.
+- **Release-LTO CI Compile Budget**: Aggressive LTO (`lto = "fat"`, `codegen-units = 1`) substantially increases release unit-test compile times in CI; keep fast inner-loop dev tests separate from release-profile artifact gates.

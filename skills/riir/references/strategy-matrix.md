@@ -29,6 +29,12 @@
 - **GC pauses vs lock/allocator stalls**: Escaping GC stops tail latency spikes, but naive Rust ports that allocate per message or hold `Mutex` across `.await` or heavy work simply replace GC pauses with allocator/lock stalls.
 - **Goroutine / green-thread blocking**: Translating blocking synchronous calls directly into an async Rust executor starves worker threads. Explicitly separate CPU-bound / blocking pools from async IO tasks.
 - **Reference cycles**: Cyclic object graphs trivial under tracing GC require arenas, generational indices, or explicit `Weak` / graph ownership in Rust.
+- **Go/Dynamic JSON `null` vs. Rust `serde` Zero-Value Coercion**: Go `encoding/json` coerces explicit JSON `null` into zero values for non-pointer strings, numbers, and structs, whereas Rust `serde` rejects `null` for non-`Option` fields. Matching type names do not prove parity — test all six shapes separately: missing key, explicit `null`, empty value, zero value, malformed payload, and wrong type.
+
+### Local Persistence, Database Identity & Concurrent Sync Traps
+- **Production DB Filename & Schema Identity**: Never rename a released production SQLite/database file or schema path to match an incubating rewrite's convention; existing users would lose local state on upgrade. Always align the incubating rewrite to the shipped production DB path and schema contract.
+- **Fresh Schema vs. Legacy Upgrade Migrations**: Model fresh DB initialization and legacy-upgrade migrations separately; keep `ALTER` / migration side effects strictly gated on actual missing columns and idempotent across restarts, with transactional rollback tests.
+- **Concurrent Snapshot-Write Staleness**: A helper that safely overwrites stored rows in serial bootstrap code becomes destructive once reused concurrently beside live message/event writes (e.g., overwriting newer previews or clearing unread counts with stale snapshots). Decide staleness atomically inside SQL (`UPDATE ... WHERE incoming_seq >= stored_seq` or empty-target fill), and re-verify every sibling column written in the same statement.
 
 ### Dynamic / Event-Loop Runtimes (TypeScript, JavaScript, Python, Ruby)
 - **Subprocess & runtime memory tax**: Eliminating an embedded VM often yields 10x+ startup and memory improvements if the Rust core loads in-process via a thin C ABI / native binding instead of spawning child processes over JSON-RPC.
@@ -42,3 +48,4 @@
 3. **Premature Idiomization**: Re-architecting data structures and renaming every symbol during a mechanical port destroys `git bisect`, breaks diff review, and hides semantic bugs. Port faithfully first, refactor behind green parity gates second.
 4. **Permanent Strangler Bridge**: Leaving temporary N-API / FFI / IPC shims alive indefinitely creates double maintenance and latency overhead. Track bridge call sites as a burn-down metric with a hard deletion milestone.
 5. **Under-Budgeting the "Second 90%"**: Reaching 100% file translation is roughly the halfway point in effort; integration debugging, encoding/platform edge cases, fuzzing, and performance tuning consume the second half.
+6. **Hidden Separate-Repo Incubation & Reviving Retired Seams**: Incubating a rewrite in a separate repository hides subtle API, DB, and error-code drift until cutover explodes. Colocate during convergence, retire broken compatibility experiments permanently instead of reviving them, and switch cleanly to a single production track.

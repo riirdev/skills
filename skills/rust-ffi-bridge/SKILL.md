@@ -26,6 +26,12 @@ Never trust manual header translations or online docs when linking native librar
 2. **Pin Sizes & Field Offsets at Compile Time**: For every `#[repr(C)]` struct shared across FFI, emit Rust compile-time assertions (`const { assert!(size_of::<T>() == ...); }` and `offset_of!(T, field)`) cross-checked against a C `sizeof`/`offsetof` probe in CI.
 3. **Verify Bitfields & Unions Byte-for-Byte**: Model C bitfields as fixed integer storage units and test exact byte patterns with all flags set/cleared.
 4. **Dynamic Library Relocation Hygiene**: When bundling or rewriting `rpath` / install names on macOS/Linux, re-sign modified binaries (ad-hoc `codesign --force --sign -` + `--verify` on Apple silicon) and keep a single runtime library instance per symbol namespace.
+5. **Compiled Bytecode & Final-Archive ABI Parity**:
+   - For JVM/Android AAR drop-ins, compare **compiled bytecode public signatures** (`javap -public`), not just Kotlin/Java source compatibility — inherited interface methods can differ from directly declared methods expected by strict binary consumers or reflection.
+   - Verify exported symbols on the **final linked archive / `.so`** (`nm -gU` / `otool`), never pre-link intermediate objects.
+   - Run actual **R8 / ProGuard shrinking verification** on Android AARs (covering generated UniFFI bindings and JNA runtime) with a negative control proving R8 strips classes when rules are withheld, and guard host apps against stale generated binding sources causing `IncompatibleClassChangeError`.
+   - On iOS XCFrameworks, strip dead `__LLVM,__bitcode` sections across **every** archive producer path and assert post-transform absence with `otool`; always rebuild all declared ABIs from fresh source for release.
+6. **Two-Stage Mobile FFI Evolution**: Stabilize drop-in compatibility artifacts (preserving artifact names, package coordinates, public error codes, and callback semantics) first, then expose a clean strongly-typed UniFFI/native surface (structs, enums, typed `Result` errors carrying structured numeric `code + message`, never parsing error strings) backed by the same Rust core.
 
 See [ABI & Layout Gates](references/abi-and-layout-gates.md).
 

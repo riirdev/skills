@@ -51,6 +51,9 @@ Never launch bulk porting until these artifacts exist and pass review:
    - Isolate parallel workers in separate Git worktrees; never edit the same file concurrently.
    - Commit scoped single-file or single-unit changes; **forbid `git stash`, `git reset --hard`, `git checkout --`, and `git push --force`** in automated loops.
    - Reserve independent diff-only adversarial review for high-risk boundaries, tricky lifetimes, and batch gates rather than churning review loops on trivial edits. See [Multi-Agent Orchestration](references/multi-agent-orchestration.md).
+6. **Colocation vs. Separate-Repo Convergence**:
+   - Do not incubate a replacement SDK or runtime hidden in a separate repository; colocate the incubating Rust workspace beside the legacy implementation during convergence so every PR forces parity visibility while keeping ONE designated production release source until cutover.
+   - When an early drop-in compatibility architecture accumulates broken assumptions, explicitly retire it and forbid reviving it rather than stacking workarounds. Allow source-selectable release rehearsal *only* during cutover, then consolidate cleanly.
 
 ## 4. The "Second 90%" — Verification & Parity
 
@@ -65,7 +68,7 @@ Compiling without errors proves Rust type and borrow rules, **not semantic parit
 Only after behavioral parity is locked behind green automated gates:
 
 1. Eliminate `static mut`, raw non-local jumps, and unnecessary `unsafe` stage-by-stage via [`rust-unsafe-hardening`](../rust-unsafe-hardening/SKILL.md) (and track progress with `riir-skills unsafe-audit`).
-2. Retire temporary FFI/ABI strangler bridges via [`rust-ffi-bridge`](../rust-ffi-bridge/SKILL.md).
+2. Retire temporary FFI/ABI strangler bridges via [`rust-ffi-bridge`](../rust-ffi-bridge/SKILL.md), and execute single-track cutover consolidation: delete the retired tree, remove source-selection switches, and preserve thin adapters only for external public contracts.
 3. Converge workspace crate layering and clean-slate contracts via [`rust-architecture`](../rust-architecture/SKILL.md).
 
 ## 6. Companion Skill Routing
