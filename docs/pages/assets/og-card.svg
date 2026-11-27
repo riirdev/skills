@@ -25,7 +25,7 @@
   </g>
   <text x="412" y="232" fill="#FB923C" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="25" font-weight="600">riir.dev · github.com/riirdev/skills</text>
   <text x="412" y="316" fill="#F8FAFC" font-family="ui-sans-serif, system-ui, sans-serif" font-size="72" font-weight="800">Rewrite It In Rust</text>
-  <text x="412" y="376" fill="#94A3B8" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30">7 Agent Skills + Zero-Dependency Pure-Rust CLI</text>
+  <text x="412" y="376" fill="#94A3B8" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30">Agent Skills Suite for Rust Rewrites &amp; Systems Engineering</text>
   <g transform="translate(412, 428)">
     <rect width="560" height="62" rx="12" fill="#090D16" stroke="#334155" stroke-width="1.5"/>
     <text x="24" y="39" fill="#34D399" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24">$</text>

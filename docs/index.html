@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>riir.dev — Rewrite It In Rust Skills &amp; Verification CLI</title>
-  <meta name="description" content="Seven specialized Agent Skills and a zero-dependency pure-Rust CLI for planning, executing, parity-testing, FFI-bridging, and hardening Rust rewrites.">
+  <title>riir.dev — Rewrite It In Rust Agent Skills</title>
+  <meta name="description" content="A focused suite of seven Agent Skills for Rewrite It In Rust (RIIR) migrations and Rust systems engineering: planning, parity testing, FFI bridges, unsafe hardening, architecture, performance, and dual-language workflows.">
   <meta name="theme-color" content="#090c12">
   <link rel="canonical" href="https://riir.dev/">
   <link rel="icon" type="image/svg+xml" href="./pages/assets/favicon.svg">
   <link rel="stylesheet" href="./pages/styles.css">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="riir.dev — Rewrite It In Rust Skills">
-  <meta property="og:description" content="Seven Agent Skills and a zero-dependency pure-Rust CLI for Rust engineering and RIIR migrations.">
+  <meta property="og:title" content="riir.dev — Rewrite It In Rust Agent Skills">
+  <meta property="og:description" content="Seven Agent Skills led by riir for planning, parity-testing, bridging, hardening, and scaling Rust rewrites and systems codebases.">
   <meta property="og:url" content="https://riir.dev/">
   <meta property="og:image" content="https://riir.dev/pages/assets/og-card.svg">
   <meta name="twitter:card" content="summary_large_image">
@@ -44,13 +44,14 @@
       <a class="brand" href="./index.html" aria-current="page">
         <img src="./pages/assets/logo.svg" alt="riir.dev emblem" width="36" height="36">
         <span class="brand-name">riir.dev</span>
-        <span class="brand-tag">7 skills · pure std rust</span>
+        <span class="brand-tag">riir skills</span>
       </a>
       <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-nav-toggle>☰</button>
       <nav class="site-nav" aria-label="Primary navigation" data-nav-menu data-open="false">
+        <a href="#skills">Skills</a>
+        <a href="#pipeline">Pipeline</a>
         <a href="#routes">Routes</a>
-        <a href="./pages/skills.html">Skills</a>
-        <a href="./pages/cli.html">CLI &amp; Targets</a>
+        <a href="#installer">Install</a>
         <a class="nav-cta" href="https://github.com/riirdev/skills" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
       </nav>
     </div>
@@ -60,16 +61,17 @@
     <section class="hero">
       <div class="shell hero-grid">
         <div>
-          <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Agent Skills + Zero-Dependency Rust CLI</span>
-          <h1>Rewrite systems into <span class="accent">safe, verified Rust</span> without guesswork.</h1>
+          <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Rewrite It In Rust · Agent Skills Suite</span>
+          <h1>Rewrite systems into <span class="accent">safe, verified Rust</span>.</h1>
           <p class="hero-copy">
-            <strong>riirdev/skills</strong> pairs seven focused Agent Skills with a pure standard-library Rust CLI.
-            Choose the right migration route, lock behavioral parity with differential harnesses, isolate FFI boundaries,
-            and systematically harden <code>unsafe</code> blocks across 14 AI coding tools.
+            <strong>riirdev/skills</strong> is a focused suite of seven Agent Skills led by <code>riir</code>.
+            It equips AI coding agents to choose the right migration route, produce pre-flight blueprints,
+            lock behavioral parity, isolate FFI boundaries, harden <code>unsafe</code> code in stages,
+            and ship fast, clean Rust workspaces.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#installer">Configure Tool Install</a>
-            <a class="btn" href="./pages/skills.html">Explore All 7 Skills</a>
+            <a class="btn btn-primary" href="#skills">Explore the 7 Skills</a>
+            <a class="btn" href="#installer">Install Skills</a>
           </div>
           <div class="install-bar">
             <div class="install-cmd"><span class="install-prompt">$</span>npx skills add riirdev/skills</div>
@@ -77,19 +79,123 @@
           </div>
         </div>
 
-        <aside class="hero-card" aria-label="Suite metrics">
+        <aside class="hero-card" aria-label="Skill suite map">
           <img class="hero-emblem" src="./pages/assets/logo.svg" alt="riir.dev forged gear chevron logo" width="116" height="116">
-          <div class="stat-grid">
-            <div class="stat-box"><strong>7 Skills</strong><span>Orchestration to hardening</span></div>
-            <div class="stat-box"><strong>14 Targets</strong><span>Cross-agent CLI &amp; manifests</span></div>
-            <div class="stat-box"><strong>0 Crates</strong><span>Pure std Rust compilation</span></div>
-            <div class="stat-box"><strong>0 Unsafe</strong><span>#![forbid(unsafe_code)] CLI</span></div>
+          <div class="suite-map">
+            <a class="suite-lead" href="./pages/skills.html#riir">
+              <strong>riir</strong>
+              <span>Core RIIR Orchestrator</span>
+            </a>
+            <div class="suite-list">
+              <a class="suite-item" href="./pages/skills.html#rust-parity-testing">
+                <strong>rust-parity-testing</strong>
+                <span>Parity &amp; Fault Injection</span>
+              </a>
+              <a class="suite-item" href="./pages/skills.html#rust-ffi-bridge">
+                <strong>rust-ffi-bridge</strong>
+                <span>FFI Seams &amp; ABI Gates</span>
+              </a>
+              <a class="suite-item" href="./pages/skills.html#rust-unsafe-hardening">
+                <strong>rust-unsafe-hardening</strong>
+                <span>Staged U1–U8 Hardening</span>
+              </a>
+              <a class="suite-item" href="./pages/skills.html#rust-architecture">
+                <strong>rust-architecture</strong>
+                <span>Layered Workspaces</span>
+              </a>
+              <a class="suite-item" href="./pages/skills.html#rust-performance">
+                <strong>rust-performance</strong>
+                <span>LTO, SIMD &amp; Profiling</span>
+              </a>
+              <a class="suite-item" href="./pages/skills.html#rust-dual-lang">
+                <strong>rust-dual-lang</strong>
+                <span>1:1 Paired Evolution</span>
+              </a>
+            </div>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="pipeline-heading">
+    <section class="section" id="skills" aria-labelledby="skills-heading">
+      <div class="shell">
+        <div class="skills-header-bar">
+          <div class="section-head" style="margin-bottom:0;">
+            <h2 id="skills-heading">The Seven-Skill Suite</h2>
+            <p>End-to-end playbooks for Rust rewrites and systems engineering, filterable by phase.</p>
+          </div>
+          <span class="count-badge" data-skill-count>7 / 7 skills</span>
+        </div>
+
+        <div class="pill-row" role="tablist" aria-label="Skill phase filters">
+          <button class="pill-btn" type="button" role="tab" aria-selected="true" data-skill-filter="all">All Phases</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="orchestrate">Orchestration</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="verify">Parity &amp; Perf</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="safety">FFI &amp; Unsafe</button>
+          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="architecture">Architecture &amp; Dual-Lang</button>
+        </div>
+
+        <div class="cards-grid">
+          <article class="skill-card skill-card-featured" data-skill-card data-skill-cats="orchestrate">
+            <div>
+              <div class="skill-name">riir</div>
+              <p class="skill-desc">Flagship RIIR orchestrator: route matrix, <code>PORTING.md</code> leakage audits, 11-class <code>LIFETIMES.tsv</code>, crate DAG cycle-breaking, risk spikes, 3-file pilot, main-branch drift sweeps, and staged reference/shim retirement.</p>
+            </div>
+            <div class="skill-foot"><span>Flagship Orchestrator</span><a href="./pages/skills.html#riir">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="verify">
+            <div>
+              <div class="skill-name">rust-parity-testing</div>
+              <p class="skill-desc">Record/replay/diff truth sets, 12-dimension structural parity, L0–L5 acceptance ladder, single-chokepoint syscall fault injection, concurrent pipe draining, and anti-vacuous verification gates.</p>
+            </div>
+            <div class="skill-foot"><span>Verification</span><a href="./pages/skills.html#rust-parity-testing">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="safety">
+            <div>
+              <div class="skill-name">rust-ffi-bridge</div>
+              <p class="skill-desc">Narrow C/C++, N-API, PyO3, WASM, and mobile UniFFI seams; compile-time layout assertions; panic sealing; eliminating leftover Rust → C-API → Rust roundtrips; and bridge burn-down.</p>
+            </div>
+            <div class="skill-foot"><span>Interop &amp; ABI</span><a href="./pages/skills.html#rust-ffi-bridge">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="safety">
+            <div>
+              <div class="skill-name">rust-unsafe-hardening</div>
+              <p class="skill-desc">Staged U1–U8 hardening: killing <code>static mut</code>, arena <code>Drop</code> &amp; <code>Vec::from_raw_parts</code> layout guards, NaN purification, Miri Tree Borrows + ASAN frame checks, provenance lints, and CI ratchets.</p>
+            </div>
+            <div class="skill-foot"><span>Soundness</span><a href="./pages/skills.html#rust-unsafe-hardening">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="architecture">
+            <div>
+              <div class="skill-name">rust-architecture</div>
+              <p class="skill-desc">Acyclic crate layering, CLI-as-kernel / thin-shell design, <code>unreachable_pub</code> + <code>dead_code</code> enforcement across multi-crate workspaces, vendored exclusion hygiene, and clean-slate contracts.</p>
+            </div>
+            <div class="skill-foot"><span>Design</span><a href="./pages/skills.html#rust-architecture">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="verify">
+            <div>
+              <div class="skill-name">rust-performance</div>
+              <p class="skill-desc">Latency, throughput, and memory gates; cross-language <code>linker-plugin-lto</code>, <code>split-debuginfo = "unpacked"</code>, symbol orderfiles, length-dispatched string tables, and <code>clippy.toml</code> SIMD fast-path enforcement.</p>
+            </div>
+            <div class="skill-foot"><span>Performance</span><a href="./pages/skills.html#rust-performance">Inspect →</a></div>
+          </article>
+
+          <article class="skill-card" data-skill-card data-skill-cats="architecture">
+            <div>
+              <div class="skill-name">rust-dual-lang</div>
+              <p class="skill-desc">1-for-1 paired file/method construction, language-neutral JSONL contracts, and decoupled test/coverage parity gates when Rust evolves alongside another language.</p>
+            </div>
+            <div class="skill-foot"><span>Dual-Language</span><a href="./pages/skills.html#rust-dual-lang">Inspect →</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pipeline" aria-labelledby="pipeline-heading">
       <div class="shell">
         <div class="section-head">
           <h2 id="pipeline-heading">Four-Stage RIIR Engineering Pipeline</h2>
@@ -132,88 +238,6 @@
               <span data-route-gate>100% inventory parity + L0-L5 green before Phase-2 safe refactoring</span>
             </div>
           </div>
-          <div class="install-bar" style="max-width:none;">
-            <div class="install-cmd"><span class="install-prompt">$</span><span data-route-cmd>cargo run -- init-ledger ./my-port --mode mechanical --apply</span></div>
-            <button class="copy-btn" type="button" data-copy-target="[data-route-cmd]">Copy</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="skills" aria-labelledby="skills-heading">
-      <div class="shell">
-        <div class="skills-header-bar">
-          <div class="section-head" style="margin-bottom:0;">
-            <h2 id="skills-heading">The Seven-Skill Suite</h2>
-            <p>Install the whole suite or filter by engineering phase.</p>
-          </div>
-          <span class="count-badge" data-skill-count>7 / 7 skills</span>
-        </div>
-
-        <div class="pill-row" role="tablist" aria-label="Skill phase filters">
-          <button class="pill-btn" type="button" role="tab" aria-selected="true" data-skill-filter="all">All Phases</button>
-          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="orchestrate">Orchestration</button>
-          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="verify">Parity &amp; Perf</button>
-          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="safety">FFI &amp; Unsafe</button>
-          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-skill-filter="architecture">Architecture &amp; Dual-Lang</button>
-        </div>
-
-        <div class="cards-grid">
-          <article class="skill-card" data-skill-card data-skill-cats="orchestrate">
-            <div>
-              <div class="skill-name">riir</div>
-              <p class="skill-desc">Flagship RIIR orchestrator: route matrix, PORTING.md, LIFETIMES.tsv, risk spikes, 3-file pilot, worktree discipline, and Phase-2 hardening.</p>
-            </div>
-            <div class="skill-foot"><span>Orchestrator</span><a href="./pages/skills.html#riir">Inspect →</a></div>
-          </article>
-
-          <article class="skill-card" data-skill-card data-skill-cats="verify">
-            <div>
-              <div class="skill-name">rust-parity-testing</div>
-              <p class="skill-desc">Record/replay/diff truth sets, 12-dimension structural parity, L0-L5 acceptance ladder, fault injection, and anti-fake-pass controls.</p>
-            </div>
-            <div class="skill-foot"><span>Verification</span><a href="./pages/skills.html#rust-parity-testing">Inspect →</a></div>
-          </article>
-
-          <article class="skill-card" data-skill-card data-skill-cats="safety">
-            <div>
-              <div class="skill-name">rust-ffi-bridge</div>
-              <p class="skill-desc">Narrow FFI seams (C ABI, N-API, PyO3, WASM, mobile), compile-time layout assertions, panic sealing, and bridge-lift burn-down.</p>
-            </div>
-            <div class="skill-foot"><span>Interop &amp; ABI</span><a href="./pages/skills.html#rust-ffi-bridge">Inspect →</a></div>
-          </article>
-
-          <article class="skill-card" data-skill-card data-skill-cats="safety">
-            <div>
-              <div class="skill-name">rust-unsafe-hardening</div>
-              <p class="skill-desc">Staged U1-U8 roadmap: pure-logic crates, killing static mut, generational handles, 100% // SAFETY: docs, and CI ratchets.</p>
-            </div>
-            <div class="skill-foot"><span>Soundness</span><a href="./pages/skills.html#rust-unsafe-hardening">Inspect →</a></div>
-          </article>
-
-          <article class="skill-card" data-skill-card data-skill-cats="architecture">
-            <div>
-              <div class="skill-name">rust-architecture</div>
-              <p class="skill-desc">Acyclic crate layering, CLI-as-kernel / thin-shell design, domain errors, bounded shutdown, and clean-slate contracts.</p>
-            </div>
-            <div class="skill-foot"><span>Design</span><a href="./pages/skills.html#rust-architecture">Inspect →</a></div>
-          </article>
-
-          <article class="skill-card" data-skill-card data-skill-cats="verify">
-            <div>
-              <div class="skill-name">rust-performance</div>
-              <p class="skill-desc">Separate latency, throughput, and memory axes; fair cold/warm gates; profiling and fixing top-10 Rust port bottlenecks.</p>
-            </div>
-            <div class="skill-foot"><span>Performance</span><a href="./pages/skills.html#rust-performance">Inspect →</a></div>
-          </article>
-
-          <article class="skill-card" data-skill-card data-skill-cats="architecture">
-            <div>
-              <div class="skill-name">rust-dual-lang</div>
-              <p class="skill-desc">1-for-1 paired file/method construction, language-neutral JSONL contracts, and decoupled test/coverage parity gates.</p>
-            </div>
-            <div class="skill-foot"><span>Dual-Language</span><a href="./pages/skills.html#rust-dual-lang">Inspect →</a></div>
-          </article>
         </div>
       </div>
     </section>
@@ -221,8 +245,8 @@
     <section class="section" id="installer" aria-labelledby="installer-heading">
       <div class="shell">
         <div class="section-head">
-          <h2 id="installer-heading">Multi-Tool Install Command Builder</h2>
-          <p>Toggle target AI coding tools, scope, and install mode. Dry-run by default until <code>--apply</code> is included.</p>
+          <h2 id="installer-heading">Install Across AI Coding Tools</h2>
+          <p>Select target AI coding tools, scope, and install mode to generate the installation command. Dry-run by default until <code>--apply</code> is included.</p>
         </div>
 
         <div class="panel-card">
@@ -278,42 +302,9 @@
             <div class="install-cmd"><span class="install-prompt">$</span><span data-built-command>cargo run -- install --tools antigravity,agy,codex,claude,cursor,opencode,pi,deepseek-harness --apply</span></div>
             <button class="copy-btn" type="button" data-copy-target="[data-built-command]">Copy</button>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="cli-heading">
-      <div class="shell">
-        <div class="section-head">
-          <h2 id="cli-heading">Engineering Verification CLI</h2>
-          <p>Zero-dependency pure-Rust utilities shipped alongside the skills for validation, unsafe auditing, and differential parity testing.</p>
-        </div>
-
-        <div class="pill-row" role="tablist" aria-label="CLI subcommands">
-          <button class="pill-btn" type="button" role="tab" aria-selected="true" data-cli-tab="validate">validate</button>
-          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-cli-tab="unsafe-audit">unsafe-audit</button>
-          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-cli-tab="diff-run">diff-run</button>
-          <button class="pill-btn" type="button" role="tab" aria-selected="false" data-cli-tab="init-ledger">init-ledger</button>
-        </div>
-
-        <div class="cli-panel" data-cli-panel="validate">
-          <pre class="code-block"><code>$ cargo run -- validate
-Validated 7 skills and 3 plugin manifests: 0 error(s)</code></pre>
-        </div>
-        <div class="cli-panel" data-cli-panel="unsafe-audit" hidden>
-          <pre class="code-block"><code>$ cargo run -- unsafe-audit src tests --forbid-static-mut --require-safety-docs --forbid-file-allows --max-unsafe-blocks 0
-Unsafe Audit: 11 file(s) scanned | forbid(unsafe_code)=0 | file_allows=0 | unsafe_blocks=0 (documented=0) | unsafe_fn=0 | static_mut=0</code></pre>
-        </div>
-        <div class="cli-panel" data-cli-panel="diff-run" hidden>
-          <pre class="code-block"><code>$ riir-skills diff-run --legacy "./ref-bin" --rust "./target/release/app" --cases parity.jsonl --timeout-ms 5000
-Differential Parity: 128/128 passed (0 failed)</code></pre>
-        </div>
-        <div class="cli-panel" data-cli-panel="init-ledger" hidden>
-          <pre class="code-block"><code>$ riir-skills init-ledger ./my-rewrite --mode incremental --apply
-[create] ./my-rewrite/PORTING.md
-[create] ./my-rewrite/LIFETIMES.tsv
-[create] ./my-rewrite/PARITY.md
-[create] ./my-rewrite/UNSAFE-MANIFEST.json</code></pre>
+          <p class="install-footnote">
+            See <a href="./pages/cli.html">Install &amp; Companion CLI</a> for directory mappings across all supported tools and optional <code>validate</code>, <code>unsafe-audit</code>, <code>diff-run</code>, and <code>init-ledger</code> helpers.
+          </p>
         </div>
       </div>
     </section>
@@ -344,7 +335,7 @@ Differential Parity: 128/128 passed (0 failed)</code></pre>
       <div><strong>riir.dev</strong> · Built with live in-browser Eliscript · <span data-year>2026</span></div>
       <div class="footer-links">
         <a href="./pages/skills.html">Skills Reference</a>
-        <a href="./pages/cli.html">CLI &amp; 14 Targets</a>
+        <a href="./pages/cli.html">Install &amp; CLI</a>
         <a href="https://github.com/riirdev/skills#contributing" target="_blank" rel="noopener noreferrer">Contribute</a>
         <a href="https://github.com/riirdev/skills" target="_blank" rel="noopener noreferrer">github.com/riirdev/skills</a>
       </div>

@@ -312,35 +312,90 @@ h1 .accent {
 }
 
 .hero-emblem {
-  width: 116px;
-  height: 116px;
-  margin: 0 auto 1.25rem;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 1.15rem;
   display: block;
 }
 
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+.suite-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
   text-align: left;
 }
 
-.stat-box {
-  padding: 0.78rem 0.9rem;
+.suite-lead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: 10px;
+  background: var(--copper-dim);
+  border: 1px solid rgba(249, 115, 22, 0.36);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.suite-lead:hover {
+  border-color: var(--copper);
+  transform: translateY(-1px);
+}
+
+.suite-lead strong {
+  font-family: var(--font-mono);
+  font-size: 0.98rem;
+  color: var(--copper-bright);
+}
+
+.suite-lead span {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.suite-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.suite-item {
+  display: block;
+  padding: 0.62rem 0.78rem;
   border-radius: 10px;
   background: rgba(9, 12, 18, 0.65);
   border: 1px solid var(--border);
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
-.stat-box strong {
+.suite-item:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.suite-item strong {
   display: block;
-  font-size: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   color: var(--text);
 }
 
-.stat-box span {
-  font-size: 0.8rem;
+.suite-item span {
+  display: block;
+  font-size: 0.75rem;
   color: var(--text-muted);
+}
+
+.install-footnote {
+  margin: 0.95rem 0 0;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+.install-footnote a {
+  color: var(--copper-bright);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* Sections */
@@ -483,6 +538,11 @@ h1 .accent {
 .skill-card:hover {
   border-color: var(--border-strong);
   transform: translateY(-2px);
+}
+
+.skill-card-featured {
+  border-color: rgba(249, 115, 22, 0.42);
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0.08), rgba(20, 27, 41, 0.96));
 }
 
 .skill-card[hidden] {
@@ -628,7 +688,8 @@ tr:last-child td {
 @media (max-width: 880px) {
   .hero-grid,
   .builder-grid,
-  .route-meta {
+  .route-meta,
+  .suite-list {
     grid-template-columns: 1fr;
   }
 
