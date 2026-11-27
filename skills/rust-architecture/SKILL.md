@@ -28,6 +28,7 @@ Organize multi-module projects into a strict acyclic DAG of crates (see [Workspa
 
 - **Pure Core (`#![forbid(unsafe_code)]`)**: Domain models, parsers, planners, state transitions, and validation live in deterministic, IO-free crates. Easy to test in milliseconds, fuzz, and reuse across CLI, server, and embedded targets.
 - **CLI as Kernel, Interfaces as Thin Shells**: Build every capability as a white-box, scriptable, deterministic CLI/core operation first. Keep stdout machine-readable (JSON/structured text) and send diagnostics to stderr. Layer HTTP, RPC, MCP, or GUI adapters thinly over the core without duplicating business or authorization logic.
+- **Multi-Crate Visibility & Dead-Code Discipline**: Splitting a monolith into dozens of internal crates forces items to be marked `pub`, exempting them from `rustc`'s `dead_code` lint. Require `[lints] workspace = true` in every crate, enforce `unreachable_pub = "deny"` (mechanically demoting internal `pub` -> `pub(crate)` via `cargo fix` to unmask dead code), run cross-crate dead-public analysis across all shipped target triples (pinning `#[no_mangle]`/codegen roots and external ABI tables), and keep vendored path crates in `[workspace] exclude = ["vendor"]` so their `[profile]` blocks and dev-dependencies do not pollute `Cargo.lock`.
 
 ## 2. Clean-Slate Engineering Discipline
 
@@ -51,7 +52,7 @@ Organize multi-module projects into a strict acyclic DAG of crates (see [Workspa
 
 ## 5. Post-Cutover Consolidation & Source-Authority Hygiene
 
-- **Inventory External Contracts Before Deletion**: Before removing a retired legacy implementation tree, inventory all stable external contracts — artifact filenames, Maven/Swift package coordinates, compiled public symbols, and persisted DB filenames — and adapt thin wrappers to the Rust core instead of breaking downstream consumers.
+- **Inventory External Contracts Before Deletion**: Before removing a retired legacy implementation tree, inventory all stable external contracts — artifact filenames, Maven/Swift package coordinates, compiled public symbols, and persisted DB filenames — and adapt thin wrappers to the Rust core instead of breaking downstream consumers. Delete superseded crates, temporary re-export shim files, and empty files in the same PR that retires them.
 - **Separate Active Truth From Historical Logs**: Keep active architecture/API docs and agent rules strictly synchronized with the sole remaining core, while preserving immutable historical logs and retrospectives clearly separated from current specifications.
 - **Verify Guardrail Claims Against Code**: Never assert that a test, index, or invariant protects a boundary from memory; inspect the actual code and confirm it is table-driven or tested before relying on it.
 

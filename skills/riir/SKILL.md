@@ -25,11 +25,12 @@ Before writing any Rust code, classify the project into one of four routes using
 Never launch bulk porting until these artifacts exist and pass review:
 
 1. **Pin a Read-Only Reference Baseline**: Record the exact commit SHA, toolchain flags, and reference binary/runtime. Never modify reference source or upstream test fixtures to make Rust pass.
-2. **Author `PORTING.md`**: Document deterministic translation rulings from the source language to Rust (primitives, integer wrap/overflow, strings/encodings, macros, bitfields, unions, error propagation, non-local jumps, allocators, concurrency). Any construct not yet covered gets a documented ruling before coding so one construct never acquires two conflicting styles.
+2. **Author `PORTING.md`**: Document deterministic translation rulings from the source language to Rust (primitives, integer wrap/overflow, strings/encodings, macros, bitfields, unions, error propagation, non-local jumps, allocators, concurrency). Any construct not yet covered gets a documented ruling before coding so one construct never acquires two conflicting styles. Before bulk fan-out, run an adversarial **source-language leakage audit** on `PORTING.md` to strip unnecessary idioms Rust obviates (e.g., threading allocator parameters everywhere when `#[global_allocator]` suffices outside explicit arenas/FFI, keeping manual `deinit()` where `Drop` suffices, or custom list wrappers where `Vec` is behaviorally equivalent).
 3. **Generate `LIFETIMES.tsv`**: Trace every struct field, global/static state, and cross-boundary handle before writing code: who allocates, who frees, whether GC/reference-counting manages it, whether it crosses non-local control flow, and whether binary serialization freezes its layout.
-4. **Run Risk Spikes on Hard Unknowns**: Prove feasibility with tiny reproducible checks on the riskiest assumptions first (e.g., `#[repr(C)]` `sizeof`/`offsetof` parity, non-local jump vs `Drop`, conservative stack scanning, signal/async cancellation, platform GUI/OS hooks).
-5. **Run a 3-File Pilot**: Port 3 small files of distinct shapes — (1) pure algorithm, (2) stateful data structure + public registration, (3) lookup table / configuration struct — close the full verification loop on all 3, and recalibrate `PORTING.md` before scaling.
-6. **Scaffold Ledgers**: Run `riir-skills init-ledger <project-dir> --mode <mechanical|incremental|clean-room|dual-lang> --apply` and see [Blueprinting Templates](references/blueprinting-templates.md).
+4. **Pre-Translation Crate DAG Cycle-Breaking**: Before wiring a multi-crate workspace, classify every circular back-edge symbol into one of five actions (`DELETE`, `TYPE_ONLY`, `MOVE_DOWN`, `FORWARD_DECL`, `GENUINE`) so crate dependencies stay strictly acyclic.
+5. **Run Risk Spikes on Hard Unknowns**: Prove feasibility with tiny reproducible checks on the riskiest assumptions first (e.g., `#[repr(C)]` `sizeof`/`offsetof` parity, non-local jump vs `Drop`, conservative stack scanning, signal/async cancellation, platform GUI/OS hooks).
+6. **Run a 3-File Pilot**: Port 3 small files of distinct shapes — (1) pure algorithm, (2) stateful data structure + public registration, (3) lookup table / configuration struct — close the full verification loop on all 3, and recalibrate `PORTING.md` before scaling.
+7. **Scaffold Ledgers**: Run `riir-skills init-ledger <project-dir> --mode <mechanical|incremental|clean-room|dual-lang> --apply` and see [Blueprinting Templates](references/blueprinting-templates.md).
 
 ## 3. Execution Phase: Throughput with Discipline
 
@@ -48,12 +49,15 @@ Never launch bulk porting until these artifacts exist and pass review:
 4. **Compiler & Inventory Errors as a Work Queue**:
    - Do not read an entire legacy codebase linearly looking for bugs. Let `cargo check`, symbol/ABI inventory diffs, and layout gates emit the exact deficit list as a deterministic work queue.
 5. **Parallel & Multi-Agent Discipline**:
+   - Compute a **deterministic output file-path mapping** (`<name>.rs` vs `<name>/mod.rs` vs `lib.rs`) upfront so workers never invent conflicting module layouts.
    - Isolate parallel workers in separate Git worktrees; never edit the same file concurrently.
    - Commit scoped single-file or single-unit changes; **forbid `git stash`, `git reset --hard`, `git checkout --`, and `git push --force`** in automated loops.
    - Reserve independent diff-only adversarial review for high-risk boundaries, tricky lifetimes, and batch gates rather than churning review loops on trivial edits. See [Multi-Agent Orchestration](references/multi-agent-orchestration.md).
 6. **Colocation vs. Separate-Repo Convergence**:
    - Do not incubate a replacement SDK or runtime hidden in a separate repository; colocate the incubating Rust workspace beside the legacy implementation during convergence so every PR forces parity visibility while keeping ONE designated production release source until cutover.
    - When an early drop-in compatibility architecture accumulates broken assumptions, explicitly retire it and forbid reviving it rather than stacking workarounds. Allow source-selectable release rehearsal *only* during cutover, then consolidate cleanly.
+7. **Main-Branch Drift Parity Sweep**:
+   - On long-running port branches, systematically audit every legacy `main` commit landed since the branch-point before cutover, verify whether the Rust equivalent carries the same fix, and port any missing behavior with regression tests.
 
 ## 4. The "Second 90%" — Verification & Parity
 
@@ -68,8 +72,9 @@ Compiling without errors proves Rust type and borrow rules, **not semantic parit
 Only after behavioral parity is locked behind green automated gates:
 
 1. Eliminate `static mut`, raw non-local jumps, and unnecessary `unsafe` stage-by-stage via [`rust-unsafe-hardening`](../rust-unsafe-hardening/SKILL.md) (and track progress with `riir-skills unsafe-audit`).
-2. Retire temporary FFI/ABI strangler bridges via [`rust-ffi-bridge`](../rust-ffi-bridge/SKILL.md), and execute single-track cutover consolidation: delete the retired tree, remove source-selection switches, and preserve thin adapters only for external public contracts.
-3. Converge workspace crate layering and clean-slate contracts via [`rust-architecture`](../rust-architecture/SKILL.md).
+2. **Staged Reference-Source & Shim Retirement**: Optionally retain legacy sources unbuilt in-tree during an initial post-cutover stabilization window solely as a side-by-side behavioral oracle; once stabilized, delete the retired source tree, legacy codegen outputs, temporary export shims, re-export shim files, source-selection switches, and empty placeholder files in dedicated cleanup passes while keeping thin adapters only for external public contracts via [`rust-ffi-bridge`](../rust-ffi-bridge/SKILL.md).
+3. **Eliminate Leftover Rust -> C-API -> Rust Roundtrips**: When the legacy host consumed a Rust dependency through its C FFI API, drop the C-API wrapper crate once the host is Rust and depend on the native Rust crate directly.
+4. **Workspace-Wide Visibility & Lint Sweeps**: Run `unreachable_pub` (`pub` -> `pub(crate)`) demotion, `dead_code` sweeps, and workspace-wide `clippy` deny-lint passes to prune orphaned port scaffolding and converge workspace crate layering via [`rust-architecture`](../rust-architecture/SKILL.md).
 
 ## 6. Companion Skill Routing
 

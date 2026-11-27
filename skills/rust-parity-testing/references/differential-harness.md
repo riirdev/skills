@@ -43,6 +43,7 @@ Keep minimized crash inputs in `tests/fixtures/` as permanent regression cases.
 Verify failure paths explicitly on both implementations:
 - Truncated and bit-flipped inputs at header, length-prefix, and payload boundaries
 - `EINTR` / transient IO interruption and retry bounds
+- **Single-Chokepoint Syscall Fault Injection**: Hook the single lowest-level socket/IO boundary (`recv`/`send`/`connect`/`accept`) to deterministically inject partial reads/writes, `EAGAIN` storms, `ECONNRESET`/`EPIPE`, connect failures, and backpressure-vs-destroy races across TLS/HTTP/WebSocket/RPC layers without altering upper state machines
 - Resource exhaustion (memory limit, file descriptor limit, disk-full write error)
 - Signal delivery (`SIGINT`, `SIGTERM`, `SIGPIPE`) during active processing
 - Resource-bounded execution with explicit timeouts so deadlocks fail fast instead of stalling CI

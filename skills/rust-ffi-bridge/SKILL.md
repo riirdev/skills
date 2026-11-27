@@ -51,5 +51,6 @@ When migrating a live codebase incrementally (Route B), keep the bridge strictly
 2. **Parity Gate Per Unit**: Verify each ported function/module with recorded truth sets and shadow comparison before switching callers.
 3. **Burn-Down Accounting**: Track `bridge_exports` and `legacy_call_sites` as explicit countdown metrics in every batch.
 4. **Mandatory Bridge Lift**: Once a subsystem reaches 100% Rust, flip the final callers, delete the FFI shim, remove fallback code paths, and eliminate the cross-language serialization/marshal tax.
+5. **Eliminate Leftover Rust -> C-API -> Rust Roundtrips**: Audit remaining `*_sys` crates after host migration; whenever a dependency is itself written in Rust and was only wrapped via its C API for the legacy host, delete the C-API glue crate and depend on the native Rust crate directly to remove opaque-handle `unsafe` trampolines, userdata aliasing hazards, and thread-local last-error shims.
 
 See [Strangler Bridge Lifecycle](references/strangler-bridge-lifecycle.md).

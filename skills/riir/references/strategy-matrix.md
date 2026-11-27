@@ -22,6 +22,9 @@
 
 ### Manual-Memory Systems Languages (e.g., C++ / Zig)
 - **Implicit RAII vs manual `defer`**: Porting manual `defer`/error-cleanup paths to Rust `Drop` and `Result` eliminates entire classes of error-path leaks and use-after-free bugs, **provided** cleanup ordering on early return is preserved.
+- **Side-Effecting Assertions Ported to `debug_assert!`**: In languages where `assert(expr)` is a regular function whose argument always evaluates (only the trap is compiled out in release), porting `assert(register_item() == expected)` to Rust's `debug_assert!(...)` silently removes the mutation in `--release`! Always hoist side effects out before asserting.
+- **Arena / Bump-Allocator `Drop` Hazard**: Resetting or clearing a bump/arena allocator does **not** run `Drop` on arena-allocated objects. Owned heap buffers, file descriptors, or refcounts placed inside arenas silently leak unless explicitly freed before reset or restricted to `Copy`/arena-backed values.
+- **Leftover Rust -> C-API -> Rust Roundtrips**: When rewriting a host runtime whose legacy implementation called a Rust dependency through C FFI glue (`*_sys`), delete the C-API wrapper after host migration and depend on the native Rust crate directly to remove `unsafe` callback trampolines and thread-local error shims.
 - **Exceptions & error-path divergence**: C++ exceptions or mixed error unions must map to a single explicit error contract; never swallow errors with `.unwrap_or_default()`.
 - **Pre-computed lifetime maps**: For large codebases (>100k LOC), extract struct field ownership and pointer lifetimes into `LIFETIMES.tsv` before translating files so workers do not guess borrow vs owned vs index-handle patterns inconsistently.
 

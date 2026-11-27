@@ -14,6 +14,7 @@ Mechanical ports from C/C++ or low-level systems code rightly allow `unsafe` ini
 1. **Parity First, Hardening Second**: Never combine initial behavioral porting with speculative safe-abstraction rewrites unless the design is greenfield. Hardening happens behind green parity gates.
 2. **Isolate, Don't Smear**: Push pure logic into `#![forbid(unsafe_code)]` crates/modules; confine unavoidable OS/FFI `unsafe` to small, audited boundary modules.
 3. **Measure With Lexer-Accurate Audits**: Always track progress with `riir-skills unsafe-audit` (not naive `grep`), gating `static mut`, missing `// SAFETY:` comments, and `unsafe` block budgets.
+4. **Enforce Provenance-Safe Casts & Baseline Ratchets**: Deny legacy pointer-cast footguns workspace-wide (`ptr_as_ptr`, `ptr_cast_constness`, `ref_as_ptr`, `borrow_as_ptr`, `cast_ptr_alignment`, `transmute_ptr_to_ptr`, `as_ptr_cast_mut`, `mem_forget`, `drop_non_drop`, `uninit_vec`, `undocumented_unsafe_blocks`, `not_unsafe_ptr_arg_deref`), ban `std::mem::zeroed` in favor of `MaybeUninit`, and gate custom soundness lints with per-`(lint, file)` baseline ratchets so PRs cannot introduce new debt.
 
 ## Staged Hardening Roadmap (U1–U8)
 
@@ -45,7 +46,8 @@ riir-skills unsafe-audit src crates \
 # Detect redundant mechanical unsafe wrappers
 RUSTFLAGS="--force-warn unused-unsafe" cargo check --all-targets
 
-# Run undefined-behavior & sanitizer checks on pure/unit subsets
-cargo +nightly miri test -p <pure-crate>
-RUSTFLAGS="-Zsanitizer=address" cargo +nightly test --target <host-triple>
+# Run undefined-behavior & sanitizer checks on FFI-free/unit subsets
+# Tree Borrows permits slab/pool/intrusive raw pointers derived via `&mut self` while catching UAF, provenance, OOB, and uninit UB
+MIRIFLAGS="-Zmiri-tree-borrows" cargo +nightly miri test -p <pure-crate>
+RUSTFLAGS="-Zsanitizer=address -Cllvm-args=-asan-use-after-return=never" cargo +nightly test --target <host-triple>
 ```

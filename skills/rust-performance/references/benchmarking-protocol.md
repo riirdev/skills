@@ -36,5 +36,7 @@ hyperfine --warmup 2 --runs 10 \
 3. **Binary Size**: `cargo bloat --release -n 30` and `twiggy` (for WASM) to trim monomorphization bloat or heavy unused features.
 4. **Release Profile Checklist**:
    - Verify `opt-level = 3` (or `"z"`/`"s"` for size-constrained targets).
-   - Test `lto = "thin"` vs `"fat"` and `codegen-units = 1` with actual binary size + throughput numbers.
+   - Test `lto = "thin"` vs `"fat"` and `codegen-units = 1` (or `lto = "off"` + `codegen-units = 1` + `-C linker-plugin-lto` when linking against C/C++) with actual binary size + throughput numbers.
    - Use PGO (`-Cprofile-generate` -> workload -> `-Cprofile-use`) on mature hot interpreters, parsers, and compilers.
+5. **Build-Time & Monomorphization Profiling**: Wrap `cargo build --timings`, `cargo-llvm-lines`, and `rustc -Zself-profile` with the exact production flags and environment variables so developers diagnose slow critical-path crates and low-parallelism windows accurately.
+6. **Symbol Orderfiles for Cold Startup**: Record runtime call-order traces across diverse realistic entry modes (short script, daemon/server, package install, pipe vs TTY CLI) while preventing spawned child processes from truncating the trace, and feed the deduplicated order into `--symbol-ordering-file` to reduce cold `.text` page faults.

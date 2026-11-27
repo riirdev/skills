@@ -44,9 +44,29 @@ Tab-separated ledger tracking ownership, deallocation, and boundary constraints 
 
 ```tsv
 file	kind	container	field_or_symbol	source_type	ownership	freed_by	thread_affinity	crosses_nonlocal_jump	layout_frozen	note
-src/session.c	struct_field	Session	buf	char*	owned_heap	free_session	single_thread	no	yes	Convert to Vec<u8> in Phase 2
-src/table.c	global	-	GLOBAL_INTERN_TAB	Table*	process_singleton	never	mutex_guarded	no	no	Wrap in OnceLock<Mutex<Table>>
+src/session.c	struct_field	Session	buf	char*	OWNED	free_session	single_thread	no	yes	Convert to Box<[u8]> / Vec<u8> in Phase 2
+src/table.c	global	-	GLOBAL_INTERN_TAB	Table*	STATIC	never	mutex_guarded	no	no	Wrap in OnceLock<Mutex<Table>>
 ```
+
+### Pointer Ownership Taxonomy (11 Classes)
+
+Classify every pointer/nullable field in `LIFETIMES.tsv` using this fixed taxonomy before writing Rust structs:
+
+| Class | Rust Representation | Source Evidence |
+| --- | --- | --- |
+| `OWNED` | `Box<T>` / `Option<Box<T>>` / `Vec<T>` | Struct allocates it in init and frees it in teardown |
+| `SHARED` | `Rc<T>` / `Arc<T>` / intrusive refcount | Multiple owners; teardown decrements/releases refcount |
+| `BORROW_PARAM` | `&'a T` | Assigned from constructor/init parameter outliving `self` |
+| `BORROW_FIELD` | Sibling-field borrow (flag for index/handle refactor) | Points into a sibling field's owned allocation on `self` |
+| `STATIC` | `&'static T` | Assigned from a process-global or singleton slot |
+| `CALLER_BORROW` | Passed per-call (`&Context` / `&VM`), omitted from struct | Caller-owned execution context always live on the call stack |
+| `BACKREF` | `*const Parent` / `Weak<Parent>` / index | Points back to the struct that owns `self` |
+| `INTRUSIVE` | `*mut Node` | Linked-list link pointer recovering parent via offset math |
+| `FFI` | `*mut T` / `*const T` | Crosses `extern "C"` boundary or comes from a `*_sys` crate |
+| `ARENA` | Arena pointer / typed index handle | Freed wholesale by arena reset, never individually |
+| `UNKNOWN` | `Option<NonNull<T>>` + tracking note | Cannot prove from one file alone; escalate to multi-vote review |
+
+Any `UNKNOWN` or cyclic classification triggers focused review before implementation rather than silent raw-pointer drift.
 
 ## 3. Risk Spike Report Format
 
@@ -72,3 +92,24 @@ Pass criteria before unlocking Batch 1:
 - Inventory/symbol check reports 0 missing and 0 invented symbols.
 - Differential cases pass 100% against reference.
 - Every surprise discovered during the pilot is codified into `PORTING.md`.
+
+## 5. Crate DAG Cycle-Break & Source-Leakage Audit
+
+### Cycle-Break Actions (Before Wiring Workspace Crates)
+
+For every circular dependency edge found between planned crates, assign one of five explicit resolutions:
+
+| Action | Meaning |
+| --- | --- |
+| `DELETE` | Dead symbol or unused legacy binding; drop instead of forwarding |
+| `TYPE_ONLY` | Only the data layout/struct/enum is needed; extract to a leaf `*-types` crate |
+| `MOVE_DOWN` | Move a mislayered helper down into a shared lower-tier crate |
+| `FORWARD_DECL` | Break runtime mutual recursion behind an explicit trait, callback table, or narrow interface |
+| `GENUINE` | True architectural coupling requiring two modules to stay in one crate |
+
+### Source-Language Leakage Audit Checklist for `PORTING.md`
+
+Before scaling workers, inspect `PORTING.md` for mechanical carryovers Rust makes unnecessary:
+- **Allocator parameters**: Drop pervasive allocator args when `#[global_allocator]` suffices; keep explicit allocator params only for per-request arenas, FFI handoffs, or stored-for-later allocators.
+- **Custom containers vs `std`**: Keep custom collections only for true layout/growth/deterministic-hash contracts (FFI-ABI lists, SoA structs, deterministic fast hashes); replace trivial wrappers with `Vec<T>` / `VecDeque<T>`.
+- **Manual `deinit()` & cleanups**: Replace manual cleanup methods and boilerplate guards with `Drop` and `Clone` unless cleanup consumes external context/handles or frees arena-allocated items.

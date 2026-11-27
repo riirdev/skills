@@ -33,3 +33,14 @@ For the minimal OS/FFI files that legitimately require `unsafe`, track each file
 - `invariants` upheld
 - `failure_path` (what happens on null, error, or panic)
 Reject any PR that introduces `unsafe` in an unlisted file or adds `#![allow(unsafe_op_in_unsafe_fn)]`.
+
+## 6. Top Post-Mechanical-Port UB & Soundness Traps
+
+Real defects repeatedly exposed once large mechanical ports hit Miri, ASAN, and fuzzers:
+
+1. **`Vec::from_raw_parts` Alignment/Layout UB**: Rebuilding an owned `Vec<u8>` (allocation `Layout` align 1) as `Vec<u16>` (align 2) via `Vec::from_raw_parts` causes UB when `dealloc` frees with mismatched alignment. Never cast allocation element types across alignments unless allocated with the target alignment.
+2. **Arena / Bump-Allocator `Drop` Blind Spot**: Arena resets never execute `Drop` on arena-stored items. Any `String`, `Vec`, FD, or refcounted handle placed in an arena leaks silently unless drained explicitly or constrained to `Copy` / arena-backed handles.
+3. **Public Raw-Pointer + `dtor` Fields (`impl Drop` Forgery)**: A struct exposing `pub ptr: NonNull<c_void>` and `pub dtor: unsafe fn(*mut c_void)` while calling `(self.dtor)(self.ptr)` inside `Drop` lets completely safe code construct arbitrary UB without an `unsafe` block. Keep raw pointer/destructor fields private behind an `unsafe fn new`.
+4. **Unpurified NaNs Into NaN-Boxed FFI Runtimes**: Native C/Rust `f64` values with crafted NaN payloads become forged tagged values or arbitrary pointers when boxed directly into a NaN-boxed JS/VM representation. Canonicalize `f64` NaNs at the FFI boundary before boxing.
+5. **Decoupling `debug_assertions` From `IS_DEBUG` & ASAN Fake Stacks**: When enabling `debug_assertions` (`CARGO_PROFILE_RELEASE_DEBUG_ASSERTIONS=true`) inside ASAN or checking release builds, move debug-only logging/conveniences to an explicit `--cfg=app_debug` flag so `debug_assertions` does not distort runtime behavior. If pairing ASAN with a conservative stack-scanning GC, compile C/C++ with `-fsanitize-address-use-after-return=never` and Rust with `-Cllvm-args=-asan-use-after-return=never` so dead fake-stack prologues neither bloat `.text` nor hide stack roots.
+6. **Convert Untrusted Input Panics to Errors**: Audit size limits, slice indices, escaped-string offset arithmetic (`saturating_sub`), truncated UTF-8 tails, and `debug_assert!` expressions that contain side effects; untrusted input must return typed errors rather than panicking.
